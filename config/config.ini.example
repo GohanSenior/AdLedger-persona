@@ -1,0 +1,39 @@
+[database]
+host = localhost
+port = 3306
+dbname = adledger_persona
+user = root
+password = ""
+charset = utf8mb4
+
+[app]
+; URL de base de l'application (à modifier en production)
+; Développement: http://localhost/adledger_persona
+; Production: https://votre-domaine.com
+base_url = http://localhost/adledger_persona
+
+; Email de l'administrateur qui reçoit les notifications
+admin_email = admin@example.com
+admin_name = Administrateur
+
+[smtp]
+; Activer ou désactiver SMTP (true/false)
+enabled = false
+
+; Serveur SMTP
+host = smtp.example.com
+
+; Port SMTP (465 pour SSL, 587 pour TLS)
+port = 587
+
+; Authentification SMTP
+auth = true
+username = votre-email@example.com
+password = votre-mot-de-passe-smtp
+
+; Sécurité (ssl ou tls)
+secure = tls
+
+; Adresse email de l'expéditeur
+from_email = no-reply@votredomaine.com
+from_name = AdLedger Persona
