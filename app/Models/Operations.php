@@ -27,6 +27,18 @@ class Operations extends Model
         return $stmt->fetch();
     }
 
+    // Récupère une opération par son nom pour un utilisateur donné
+    public function getOperationByNameAndUserId($operation_name, $id_user)
+    {
+        $sql = "SELECT DISTINCT op.* FROM operations op
+                INNER JOIN personas p ON op.id_operation = p.id_operation
+                WHERE op.operation_name = :operation_name AND p.id_user = :id_user
+                LIMIT 1";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['operation_name' => $operation_name, 'id_user' => $id_user]);
+        return $stmt->fetch();
+    }
+
     // Récupère les opérations associées à un utilisateur
     public function getOperationsByUserId($id_user)
     {

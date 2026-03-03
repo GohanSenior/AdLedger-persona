@@ -65,8 +65,8 @@ class PersonasController
 
                     // Créer ou récupérer l'opération si un nom d'opération est fourni
                     if (!empty($operationName)) {
-                        // Vérifier si l'opération existe déjà
-                        $existingOperation = $this->operationModel->getOperationByName($operationName);
+                        // Vérifier si l'opération existe déjà pour cet utilisateur
+                        $existingOperation = $this->operationModel->getOperationByNameAndUserId($operationName, $_SESSION['user_id']);
 
                         if ($existingOperation) {
                             // Utiliser l'ID de l'opération existante
@@ -405,8 +405,8 @@ class PersonasController
                                     throw new Exception("Erreur lors de la mise à jour de l'opération.");
                                 }
                             } else {
-                                // Sinon, vérifier si l'opération existe déjà
-                                $existingOperation = $this->operationModel->getOperationByName($operationName);
+                                // Sinon, vérifier si l'opération existe déjà pour cet utilisateur
+                                $existingOperation = $this->operationModel->getOperationByNameAndUserId($operationName, $_SESSION['user_id']);
 
                                 if ($existingOperation) {
                                     // Utiliser l'ID de l'opération existante
