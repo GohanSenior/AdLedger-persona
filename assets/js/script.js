@@ -77,6 +77,15 @@ if (passwordInput && confirmInput) {
   });
 }
 
+// Bloquer les caractères invalides dans les champs de type number (e, E, +, -, . et ,)
+document.querySelectorAll("input[type='number']").forEach((input) => {
+  input.addEventListener("keydown", (e) => {
+    if (["e", "E", "+", "-", ".", ","].includes(e.key)) {
+      e.preventDefault();
+    }
+  });
+});
+
 // Gestion de la navigation entre les étapes du formulaire
 if (document.querySelectorAll(".step").length > 0) {
   let current = 0; // Index de l'étape courante
@@ -99,9 +108,38 @@ if (document.querySelectorAll(".step").length > 0) {
       submitBtn.style.display = i === steps.length - 1 ? "block" : "none";
   }
 
+  function validateStep(stepIndex) {
+    const step = steps[stepIndex];
+    const requiredFields = step.querySelectorAll("[required]");
+    let valid = true;
+
+    // Supprimer l'ancien message d'erreur s'il existe
+    const existingAlert = step.querySelector(".step-error-alert");
+    if (existingAlert) existingAlert.remove();
+
+    requiredFields.forEach((field) => {
+      if (!field.value.trim()) {
+        // field.classList.add("is-invalid");
+        valid = false;
+      } else {
+        // field.classList.remove("is-invalid");
+      }
+    });
+
+    if (!valid) {
+      const alert = document.createElement("div");
+      alert.className = "alert alert-danger mt-2 step-error-alert";
+      alert.textContent = "Veuillez remplir tous les champs obligatoires avant de continuer.";
+      step.prepend(alert);
+    }
+
+    return valid;
+  }
+
   if (nextBtn) {
     nextBtn.addEventListener("click", function () {
       if (current < steps.length - 1) {
+        if (!validateStep(current)) return;
         current++;
         showStep(current);
       }
@@ -119,15 +157,6 @@ if (document.querySelectorAll(".step").length > 0) {
 
   showStep(current);  //Affiche la première étape au chargement  
 }
-
-// Bloquer les caractères invalides dans les champs de type number (e, E, +, -, . et ,)
-document.querySelectorAll("input[type='number']").forEach((input) => {
-  input.addEventListener("keydown", (e) => {
-    if (["e", "E", "+", "-", ".", ","].includes(e.key)) {
-      e.preventDefault();
-    }
-  });
-});
 
 // DataTables initialization
 $(document).ready(function () {
@@ -380,13 +409,34 @@ if (document.querySelector("[data-criteria-types]")) {
     wrapper.appendChild(removeButton);
     criteriaDiv.appendChild(wrapper);
     container.appendChild(criteriaDiv);
+
+    updateRemoveButtons(typeId);
   };
+
+  // Met à jour la visibilité des boutons supprimer selon le nombre de champs
+  function updateRemoveButtons(typeId) {
+    const container = document.getElementById(`criteria-container-${typeId}`);
+    if (!container) return;
+    const items = container.querySelectorAll(".criteria-item");
+    items.forEach((item) => {
+      const btn = item.querySelector(".btn-danger");
+      if (btn) {
+        btn.disabled = items.length <= 1;
+        btn.title = items.length <= 1 ? "Au moins un critère est requis" : "";
+      }
+    });
+  }
 
   // Fonction pour supprimer un critère
   window.removeCriteria = function (typeId, id) {
+    const container = document.getElementById(`criteria-container-${typeId}`);
+    if (container && container.querySelectorAll(".criteria-item").length <= 1) {
+      return; // Ne pas supprimer le dernier champ
+    }
     const criteriaDiv = document.getElementById(`criteria-${typeId}-${id}`);
     if (criteriaDiv) {
       criteriaDiv.remove();
+      updateRemoveButtons(typeId);
     }
   };
 

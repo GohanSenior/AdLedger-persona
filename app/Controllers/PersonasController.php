@@ -43,27 +43,15 @@ class PersonasController
             $customCriteria = $_POST['custom_criteria'] ?? [];
 
             // Validation des champs obligatoires
-            if (empty($firstname)) {
-                $errors[] = "Le prénom est requis.";
-            }
-            if (empty($lastname)) {
-                $errors[] = "Le nom est requis.";
-            }
-            if (empty($age)) {
-                $errors[] = "L'âge est requis.";
-            } elseif (!is_numeric($age) || $age < 0) {
-                $errors[] = "L'âge doit être un nombre positif.";
-            }
-            if (empty($sexe)) {
-                $errors[] = "Le sexe est requis.";
-            } elseif (!in_array($sexe, ['homme', 'femme', 'autre'])) {
-                $errors[] = "Le sexe doit être 'homme', 'femme' ou 'autre'.";
-            }
-            if (empty($city)) {
-                $errors[] = "La ville est requise.";
-            }
-            if (empty($job)) {
-                $errors[] = "Le métier est requis.";
+            if (empty($firstname) || empty($lastname) || empty($age) || empty($sexe) || empty($city) || empty($job)) {
+                $errors[] = "Veuillez remplir tous les champs obligatoires.";
+            } else {
+                if (!is_numeric($age) || $age < 0) {
+                    $errors[] = "L'âge doit être un nombre positif.";
+                }
+                if (!in_array($sexe, ['homme', 'femme', 'autre'])) {
+                    $errors[] = "Le sexe doit être 'homme', 'femme' ou 'autre'.";
+                }
             }
 
             // Si pas d'erreurs, créer le persona
@@ -386,27 +374,15 @@ class PersonasController
             $regenerateAvatar = isset($_POST['regenerate_avatar']);
 
             // Validation des champs obligatoires
-            if (empty($firstname)) {
-                $errors[] = "Le prénom est requis.";
-            }
-            if (empty($lastname)) {
-                $errors[] = "Le nom est requis.";
-            }
-            if (empty($age)) {
-                $errors[] = "L'âge est requis.";
-            } elseif (!is_numeric($age) || $age < 0) {
-                $errors[] = "L'âge doit être un nombre positif.";
-            }
-            if (empty($sexe)) {
-                $errors[] = "Le sexe est requis.";
-            } elseif (!in_array($sexe, ['homme', 'femme', 'autre'])) {
-                $errors[] = "Le sexe doit être 'homme', 'femme' ou 'autre'.";
-            }
-            if (empty($city)) {
-                $errors[] = "La ville est requise.";
-            }
-            if (empty($job)) {
-                $errors[] = "Le métier est requis.";
+            if (empty($firstname) || empty($lastname) || empty($age) || empty($sexe) || empty($city) || empty($job)) {
+                $errors[] = "Veuillez remplir tous les champs obligatoires.";
+            } else {
+                if (!is_numeric($age) || $age < 0) {
+                    $errors[] = "L'âge doit être un nombre positif.";
+                }
+                if (!in_array($sexe, ['homme', 'femme', 'autre'])) {
+                    $errors[] = "Le sexe doit être 'homme', 'femme' ou 'autre'.";
+                }
             }
 
             // Si pas d'erreurs, mettre à jour le persona
