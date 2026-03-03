@@ -23,3 +23,7 @@ Thumbs.db
 tmp/
 temp/
 cache/
+
+# Images logo (sauf le logo par défaut)
+assets/logo/*
+!assets/logo/default1.svg
