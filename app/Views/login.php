@@ -2,6 +2,12 @@
     <div class="text-center form-wrapper">
         <div class="card p-4 rounded-4 form-card">
             <h1 class="text-uppercase mb-4 fw-bold title-custom">Votre espace</h1>
+            <?php if (!empty($_SESSION['info_message'])): ?>
+                <div class="alert alert-info">
+                    <p class="mb-0"><?= htmlspecialchars($_SESSION['info_message'], ENT_QUOTES, 'UTF-8'); ?></p>
+                </div>
+                <?php unset($_SESSION['info_message']); ?>
+            <?php endif; ?>
             <?php if (!empty($errors)): ?>
                 <div class="alert alert-danger">
                     <?php foreach ($errors as $error): ?>

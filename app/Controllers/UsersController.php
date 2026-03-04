@@ -148,6 +148,7 @@ class UsersController
                     $_SESSION['email'] = $email;
                     $_SESSION['phone'] = $phone;
                     $_SESSION['role'] = 'user'; // Par défaut
+                    $_SESSION['last_activity'] = time(); // Initialiser le timestamp de la dernière activité
                     $_SESSION['id_company'] = $companyId;
 
                     // Rediriger vers le tableau de bord
@@ -202,6 +203,7 @@ class UsersController
                         $_SESSION['email'] = $user['email'];
                         $_SESSION['phone'] = $user['phone'];
                         $_SESSION['role'] = $user['role'];
+                        $_SESSION['last_activity'] = time(); // Initialiser le timestamp de la dernière activité
                         $_SESSION['id_company'] = $user['id_company'];
 
                         // Rediriger vers le tableau de bord
@@ -226,11 +228,14 @@ class UsersController
      */
     public function logout()
     {
-        // Détruire toutes les variables de session
-        $_SESSION = [];
+        $inactivity = isset($_GET['inactivity']) && $_GET['inactivity'] === '1';
 
-        // Détruire la session
-        session_destroy();
+        if ($inactivity) {
+            self::expireSession();
+        } else {
+            $_SESSION = [];
+            session_destroy();
+        }
 
         // Rediriger vers la page de connexion
         header('Location: index.php?action=login');
@@ -329,7 +334,7 @@ class UsersController
         if (!empty($token)) {
             // Vérifier la validité du token
             $user = $this->userModel->getUserByResetToken($token);
-            
+
             if ($user) {
                 $validToken = true;
             }
@@ -374,11 +379,28 @@ class UsersController
     }
 
     /**
-     * Vérifie si un utilisateur est connecté
+     * Vérifie si un utilisateur est connecté et gère l'expiration de la session après une période d'inactivité
      */
     public static function isLoggedIn()
     {
-        return isset($_SESSION['user_id']);
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if (!isset($_SESSION['user_id'])) {
+            return false;
+        }
+
+        $timeout = 30 * 60; // 30 minutes en secondes (à ajuster)
+
+        if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > $timeout) {
+            self::expireSession();
+            return false;
+        }
+
+        // Mettre à jour le timestamp à chaque requête
+        $_SESSION['last_activity'] = time();
+        return true;
     }
 
     /**
@@ -387,6 +409,72 @@ class UsersController
     public static function isAdmin()
     {
         return isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
+    }
+
+    /**
+     * Détruit la session courante et prépare un message d'inactivité pour la page de login
+     */
+    private static function expireSession(): void
+    {
+        $_SESSION = [];
+        session_destroy();
+        session_start();
+        $_SESSION['info_message'] = "Vous avez été déconnecté automatiquement après une période d'inactivité.";
+    }
+
+    /**
+     * Affiche le tableau de bord
+     */
+    public function dashboard()
+    {
+        // Vérifier que l'utilisateur est connecté
+        if (!self::isLoggedIn()) {
+            header('Location: index.php?action=login');
+            exit();
+        }
+
+        // Récupérer les données de l'entreprise
+        $company = null;
+        if (isset($_SESSION['id_company'])) {
+            $company = $this->companyModel->getCompanyById($_SESSION['id_company']);
+        }
+
+        // Afficher le dashboard
+        $content = __DIR__ . '/../Views/dashboard.php';
+        require_once __DIR__ . '/../Views/gabarit.php';
+    }
+
+    /**
+     * Affiche sa fiche utilisateur
+     */
+    public function profileUser()
+    {
+        $errors = [];
+
+        // Vérifier que l'utilisateur est connecté
+        if (!self::isLoggedIn()) {
+            header('Location: index.php?action=login');
+            exit();
+        }
+
+        // Récupérer les informations de l'utilisateur
+        $user = $this->userModel->getUserById($_SESSION['user_id']);
+
+        if (!$user) {
+            $errors[] = "Utilisateur introuvable.";
+        } else {
+            // Récupérer les informations de l'entreprise si disponible
+            if (isset($_SESSION['id_company'])) {
+                $company = $this->companyModel->getCompanyById($_SESSION['id_company']);
+                if ($company && isset($company['company_name'])) {
+                    $user['company_name'] = $company['company_name'];
+                }
+            }
+        }
+
+        // Afficher la page de profil
+        $content = __DIR__ . '/../Views/profile_user.php';
+        require_once __DIR__ . '/../Views/gabarit.php';
     }
 
     /**
@@ -504,61 +592,6 @@ class UsersController
     }
 
     /**
-     * Affiche le tableau de bord
-     */
-    public function dashboard()
-    {
-        // Vérifier que l'utilisateur est connecté
-        if (!self::isLoggedIn()) {
-            header('Location: index.php?action=login');
-            exit();
-        }
-
-        // Récupérer les données de l'entreprise
-        $company = null;
-        if (isset($_SESSION['id_company'])) {
-            $company = $this->companyModel->getCompanyById($_SESSION['id_company']);
-        }
-
-        // Afficher le dashboard
-        $content = __DIR__ . '/../Views/dashboard.php';
-        require_once __DIR__ . '/../Views/gabarit.php';
-    }
-
-    /**
-     * Affiche sa fiche utilisateur
-     */
-    public function profileUser()
-    {
-        $errors = [];
-
-        // Vérifier que l'utilisateur est connecté
-        if (!self::isLoggedIn()) {
-            header('Location: index.php?action=login');
-            exit();
-        }
-
-        // Récupérer les informations de l'utilisateur
-        $user = $this->userModel->getUserById($_SESSION['user_id']);
-
-        if (!$user) {
-            $errors[] = "Utilisateur introuvable.";
-        } else {
-            // Récupérer les informations de l'entreprise si disponible
-            if (isset($_SESSION['id_company'])) {
-                $company = $this->companyModel->getCompanyById($_SESSION['id_company']);
-                if ($company && isset($company['company_name'])) {
-                    $user['company_name'] = $company['company_name'];
-                }
-            }
-        }
-
-        // Afficher la page de profil
-        $content = __DIR__ . '/../Views/profile_user.php';
-        require_once __DIR__ . '/../Views/gabarit.php';
-    }
-
-    /**
      * Affiche la liste de tous les utilisateurs (admin uniquement)
      */
     public function listUsers()
@@ -652,7 +685,7 @@ class UsersController
                 try {
                     $newStatus = ($enabled == 1) ? 0 : 1;
                     $success = $this->userModel->updateUserEnabled($id, $newStatus);
-                    
+
                     if ($success) {
                         $_SESSION['success_message'] = "Le statut de l'utilisateur a été mis à jour.";
                     } else {

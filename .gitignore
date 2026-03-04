@@ -27,3 +27,6 @@ cache/
 # Images logo (sauf le logo par défaut)
 assets/logo/*
 !assets/logo/default1.svg
+
+# Base de données dev
+BDD/adledger_persona_dev.sql

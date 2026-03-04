@@ -174,6 +174,7 @@
     </footer>
     <script src="assets/js/datatables.min.js"></script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script>var userIsLoggedIn = <?= isset($_SESSION['user_id']) ? 'true' : 'false'; ?>;</script>  <!-- Variable JavaScript pour indiquer si l'utilisateur est connecté -->
     <script src="assets/js/script.js"></script>
 </body>
 

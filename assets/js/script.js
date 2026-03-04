@@ -129,7 +129,8 @@ if (document.querySelectorAll(".step").length > 0) {
     if (!valid) {
       const alert = document.createElement("div");
       alert.className = "alert alert-danger mt-2 step-error-alert";
-      alert.textContent = "Veuillez remplir tous les champs obligatoires avant de continuer.";
+      alert.textContent =
+        "Veuillez remplir tous les champs obligatoires avant de continuer.";
       step.prepend(alert);
     }
 
@@ -155,7 +156,7 @@ if (document.querySelectorAll(".step").length > 0) {
     });
   }
 
-  showStep(current);  //Affiche la première étape au chargement  
+  showStep(current); //Affiche la première étape au chargement
 }
 
 // DataTables initialization
@@ -177,10 +178,10 @@ $(document).ready(function () {
     $("#personasTable").DataTable({
       // ... options
       language: {
-        search: "Rechercher :",         // label de champ de recherche        
-        lengthMenu: "_MENU_ entrées",   // Sélecteur nombre d’entrées
+        search: "Rechercher :", // label de champ de recherche
+        lengthMenu: "_MENU_ entrées", // Sélecteur nombre d’entrées
         info: "Affichage de _START_ à _END_ sur _TOTAL_ entrées", // Info pagination
-        infoEmpty: "Affichage de 0 à 0 sur 0 entrées",  // Quand la table est vide
+        infoEmpty: "Affichage de 0 à 0 sur 0 entrées", // Quand la table est vide
         infoFiltered: "(filtré de _MAX_ entrées totales)", // Info filtrage
         paginate: {
           first: "<<",
@@ -469,4 +470,38 @@ if (document.querySelector("[data-criteria-types]")) {
       addCriteria(type.id_criteria_type);
     });
   }
+}
+
+// Gestion de l'inactivité et déconnexion automatique
+if (window.userIsLoggedIn) {
+  (function () {
+    const WARNING_DELAY = 25 * 60 * 1000; // Avertissement à 25 min
+    const LOGOUT_DELAY = 30 * 60 * 1000; // Déconnexion à 30 min
+
+    let warningTimer, logoutTimer;
+
+    function resetTimers() {
+      clearTimeout(warningTimer);
+      clearTimeout(logoutTimer);
+
+      warningTimer = setTimeout(function () {
+        alert(
+          "Attention : vous serez déconnecté dans 5 minutes pour cause d'inactivité.",
+        );
+      }, WARNING_DELAY);
+
+      logoutTimer = setTimeout(function () {
+        window.location.href = "index.php?action=logout&inactivity=1";
+      }, LOGOUT_DELAY);
+    }
+
+    // Réinitialiser les timers à chaque interaction utilisateur
+    ["mousemove", "keydown", "click", "scroll", "touchstart"].forEach(
+      function (event) {
+        document.addEventListener(event, resetTimers, { passive: true });
+      },
+    );
+
+    resetTimers(); // Démarrer au chargement de la page
+  })();
 }
