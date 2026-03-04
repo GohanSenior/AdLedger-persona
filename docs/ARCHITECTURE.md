@@ -280,6 +280,8 @@ if (!UsersController::isLoggedIn()) {
 }
 ```
 
+`isLoggedIn()` vérifie non seulement la présence de la session, mais aussi l'inactivité : si l'utilisateur n'a pas interacté depuis plus de 30 minutes, la session est détruite via `expireSession()` (méthode `private static` de `UsersController`) et `false` est retourné. C'est le filet de sécurité côté serveur, complémentaire au timer JS de `script.js`.
+
 Pour les actions réservées à l'admin :
 
 ```php
@@ -328,6 +330,8 @@ gabarit.php
 │     └── require $content  ← ici s'insère la vue spécifique
 ├── <footer>     — Liens légaux, copyright
 └── <script>     — JS (jQuery, Bootstrap, DataTables, script.js)
+                   + injection de `var userIsLoggedIn` (true/false selon session)
+                     pour conditionner les timers d'inactivité côté client
 ```
 
 La variable `$content` est définie dans le contrôleur et contient le chemin absolu vers la vue à afficher. `gabarit.php` la lit avec `require`.

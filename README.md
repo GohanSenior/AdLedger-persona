@@ -155,9 +155,10 @@ adledger_persona/
 │   ├── css/                   # Feuilles de style
 │   ├── js/                    # Scripts JS (jQuery, DataTables, script.js)
 │   ├── img/                   # Images et icônes
-│   └── fonts/                 # Polices locales (Roboto, Jura)
+│   ├── fonts/                 # Polices locales (Roboto, Jura)
+│   └── logo/                  # Logos uploadés par les utilisateurs (non versionnés sauf default)
 └── BDD/                       # Scripts SQL
-    └── adledger_persona.sql
+    └── adledger_persona.sql       # Script de production
 
 ```
 
@@ -169,6 +170,7 @@ adledger_persona/
 
 - Inscription avec création automatique de l'entreprise associée
 - Connexion / déconnexion
+- Déconnexion automatique après 30 minutes d'inactivité (avertissement à 25 min)
 - Réinitialisation du mot de passe par email
 - Activation / désactivation d'un compte (admin)
 - Profil utilisateur
