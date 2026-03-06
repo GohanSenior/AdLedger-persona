@@ -814,6 +814,243 @@ a.info-value:hover {
   color: white;
 }
 
+/* ===== ANALYSE SWOT ===== */
+
+.swot-header-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--gradient-avatar);
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 4px 12px rgba(168, 21, 128, 0.2);
+  border: 4px solid white;
+}
+
+/* Grille 3×3 : coin vide | Positif | Négatif / Interne | ... | ... / Externe | ... | ... */
+.swot-grid {
+  display: grid;
+  grid-template-columns: 2.25rem 1fr 1fr;
+  grid-template-rows: auto;
+  gap: 0.75rem;
+}
+
+/* Coin vide en haut à gauche */
+.swot-axis-corner {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+/* Étiquettes de colonnes (Positif / Négatif) */
+.swot-axis-col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 0.4rem 0.5rem;
+  border-radius: 8px;
+}
+
+.swot-col-positive {
+  /* background-color: rgba(69, 40, 124, 0.08); */
+  background-color: #fafafa;
+  color: var(--color-violet-1);
+}
+
+.swot-col-negative {
+  /* background-color: rgba(69, 40, 124, 0.08); */
+  background-color: #fafafa;
+  color: var(--color-pink);
+}
+
+/* Étiquettes de lignes (Interne / Externe) — texte vertical */
+.swot-axis-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  padding: 0.4rem 0.2rem;
+}
+
+.swot-axis-row span {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.swot-row-internal {
+  background-color: rgba(69, 40, 124, 0.08);
+  color: var(--color-violet-1);
+}
+
+.swot-row-external {
+  background-color: rgba(220, 63, 148, 0.08);
+  color: var(--color-magenta);
+}
+
+/* Quadrants */
+.swot-quadrant {
+  border-radius: 12px;
+  padding: 1.1rem 1.1rem 0.9rem;
+  border: 1px solid transparent;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.swot-quadrant:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* Fond par axe interne/externe (même ligne = même fond) */
+.swot-strengths,
+.swot-weaknesses {
+  background-color: rgba(69, 40, 124, 0.05);
+  border-color: rgba(69, 40, 124, 0.15);
+}
+
+.swot-opportunities,
+.swot-threats {
+  background-color: rgba(220, 63, 148, 0.05);
+  border-color: rgba(220, 63, 148, 0.15);
+}
+
+.swot-quadrant-header {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.9rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.swot-quadrant-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  background-color: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.swot-quadrant-title {
+  font-family: var(--title-font-family);
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Couleur du titre/icône par axe positif/négatif (même colonne = même couleur) */
+.swot-strengths .swot-quadrant-title,
+.swot-strengths .swot-quadrant-icon,
+.swot-opportunities .swot-quadrant-title,
+.swot-opportunities .swot-quadrant-icon {
+  color: var(--color-violet-1);
+}
+
+.swot-weaknesses .swot-quadrant-title,
+.swot-weaknesses .swot-quadrant-icon,
+.swot-threats .swot-quadrant-title,
+.swot-threats .swot-quadrant-icon {
+  color: var(--color-pink);
+}
+
+.swot-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.swot-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.4rem 0;
+  font-size: 0.9rem;
+  color: var(--color-violet-1);
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.05);
+}
+
+.swot-list li:last-child {
+  border-bottom: none;
+}
+
+.swot-check-icon { color: var(--color-violet-1); flex-shrink: 0; margin-top: 3px; }
+.swot-cross-icon  { color: var(--color-pink);     flex-shrink: 0; margin-top: 3px; }
+
+.swot-empty {
+  color: #bbb !important;
+  font-style: italic;
+  font-size: 0.85rem !important;
+}
+
+/* Badge axe interne/externe — caché sur desktop, visible en mobile */
+.swot-axis-badge {
+  display: none;
+  margin-left: auto;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 0.2rem 0.5rem;
+  border-radius: 50px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.swot-badge-internal {
+  background-color: rgba(69, 40, 124, 0.1);
+  color: var(--color-violet-1);
+}
+
+.swot-badge-external {
+  background-color: rgba(220, 63, 148, 0.1);
+  color: var(--color-magenta);
+}
+
+/* Mobile : sous 640px — 1 colonne, plus d'en-têtes ni d'étiquettes */
+@media (max-width: 640px) {
+  .swot-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .swot-axis-corner,
+  .swot-axis-row,
+  .swot-axis-col {
+    display: none;
+  }
+
+  /* Afficher les badges dans les quadrants */
+  .swot-axis-badge {
+    display: inline-block;
+  }
+
+  .swot-quadrant {
+    padding: 0.85rem;
+  }
+
+  .swot-list li {
+    font-size: 0.88rem;
+  }
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 992px) {
   .persona-card {
@@ -840,5 +1077,103 @@ a.info-value:hover {
   
   .profile-header {
     padding: 2rem 1.5rem 1rem;
+  }
+}
+
+/* ===== FORMULAIRE SWOT ===== */
+
+/* Grille 2 × 2 pour les quadrants éditables */
+.swot-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+/* Ligne d'un item (input + bouton supprimer) */
+.swot-item-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.swot-item-input {
+  flex: 1;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background-color: white;
+  font-size: 0.875rem;
+  color: var(--color-violet-1);
+  padding: 0.35rem 0.6rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.swot-item-input:focus {
+  outline: none;
+  border-color: var(--color-magenta);
+  box-shadow: 0 0 0 3px rgba(220, 63, 148, 0.12);
+}
+
+/* Bouton supprimer (×) d'un item */
+.btn-swot-delete {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  background: none;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+  color: #999;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  padding: 0;
+}
+
+.btn-swot-delete:hover {
+  background-color: rgba(220, 63, 148, 0.1);
+  border-color: var(--color-pink);
+  color: var(--color-pink);
+}
+
+/* Bouton "Ajouter un élément" */
+.btn-add-swot-item {
+  background: none;
+  border: 1px dashed rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  color: #888;
+  font-size: 0.8rem;
+  padding: 0.3rem 0.75rem;
+  width: 100%;
+  transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+}
+
+.btn-add-swot-item:hover {
+  border-color: var(--color-magenta);
+  color: var(--color-magenta);
+  background-color: rgba(220, 63, 148, 0.05);
+}
+
+.swot-label {
+  background-color: #fafafa;
+  padding: 8px;
+  border-radius: 5px;
+}
+
+.swot-label-positive {
+  color: var(--color-violet-1);
+}
+
+.swot-label-negative {
+  color: var(--color-pink);
+}
+
+/* Responsive : 1 colonne sous 600 px */
+@media (max-width: 600px) {
+  .swot-form-grid {
+    grid-template-columns: 1fr;
   }
 }

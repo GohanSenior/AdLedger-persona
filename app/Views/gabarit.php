@@ -49,11 +49,32 @@
                             </a>
                         </li>
                         <li class="nav-item dropdown">
+                            <a href="" class="nav-link fw-medium dropdown-toggle <?= in_array($currentAction, ['view-swot']) ? 'active' : '' ?>"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                 <img class="me-1" src="assets/img/swot.svg" alt="SWOT">
+                                SWOT
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item fw-medium" href="index.php?action=view-swot&company_id=<?= (int)($_SESSION['id_company'] ?? 0) ?>">
+                                        <img class="me-1" src="assets/img/swot-lnk.svg" alt="View SWOT">
+                                        Voir mon SWOT
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item fw-medium" href="index.php?action=swot-form&company_id=<?= (int)($_SESSION['id_company'] ?? 0) ?>">
+                                        <img class="me-1" src="assets/img/swot-edit.svg" alt="Edit SWOT">
+                                        Créer / Modifier mon SWOT
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
                             <a class="nav-link fw-medium dropdown-toggle 
                             <?= in_array($currentAction, ['list-personas', 'list-personas-types', 'create-persona', 'list-operations']) && !isset($_GET['user_id']) ? 'active' : '' ?>"
                                 href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img class="me-1" src="assets/img/personas-alt.svg" alt="Personas">
-                                Mes personas
+                                Persona
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
@@ -109,7 +130,7 @@
                             <a class="nav-link fw-medium dropdown-toggle <?= in_array($currentAction, ['edit-user', 'profile-user', 'edit-company']) ? 'active' : '' ?>"
                                 href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img class="me-1" src="assets/img/profile-lnk.svg" alt="Profile">
-                                Mon profil
+                                Profil
                             </a>
                             <ul class="dropdown-menu">
                                 <li>

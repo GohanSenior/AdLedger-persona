@@ -150,12 +150,25 @@ try {
             $controller = new PersonasController();
             $controller->searchCriteria();
             exit();
+        case 'swot-form':
+            $controller = new SwotsController();
+            $controller->showSwotForm();
+            exit();
+        case 'save-swot':
+            $controller = new SwotsController();
+            $controller->saveSwot();
+            exit();
+        case 'view-swot':
+            $controller = new SwotsController();
+            $controller->showSwot();
+            exit();
         default:
             // Rediriger vers dashboard si connecté, sinon vers login
             if (isset($_SESSION['user_id'])) {
                 header('Location: index.php?action=dashboard');
             } else {
                 $content = 'app/Views/login.php';
+                // $content = 'app/Views/profile_swot.php';  Rediriger vers profile_swot.php pour les tests
             }
             break;
     }
