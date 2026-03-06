@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `swots` (
-  `id_swot` int NOT NULL,
+  `id_swot` int NOT NULL AUTO_INCREMENT,
   `title` varchar(50) NOT NULL,
   `created_at` date NOT NULL,
   `is_archived` tinyint(1) NOT NULL DEFAULT '0',
@@ -42,7 +42,7 @@ CREATE TABLE `swots` (
 --
 
 CREATE TABLE `swot_items` (
-  `id_swot_item` int NOT NULL,
+  `id_swot_item` int NOT NULL AUTO_INCREMENT,
   `category` enum('strength','weakness','opportunity','threat') NOT NULL,
   `content` text NOT NULL,
   `created_at` date NOT NULL,
