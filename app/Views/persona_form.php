@@ -1,7 +1,7 @@
 <div class="container d-flex justify-content-center div-container">
     <div class="text-center form-wrapper">
         <div class="card p-4 mb-5 rounded-4 form-card">
-            <a href="<?= $editMode ? 'javascript:history.back()' : 'index.php?action=dashboard' ?>" id="closeBtn">
+            <a href="<?= $editMode ? 'javascript:history.back()' : 'index.php' ?>" id="closeBtn">
                 <img src="assets/img/close-btn.svg" alt="Fermer">
             </a>
             <h1 class="text-uppercase mb-4 fw-bold title-custom">Votre Persona</h1>

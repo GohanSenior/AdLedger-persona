@@ -74,7 +74,7 @@
                             <?= in_array($currentAction, ['list-personas', 'list-personas-types', 'create-persona', 'list-operations']) && !isset($_GET['user_id']) ? 'active' : '' ?>"
                                 href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img class="me-1" src="assets/img/personas-alt.svg" alt="Personas">
-                                Persona
+                                Personas
                             </a>
                             <ul class="dropdown-menu">
                                 <li>

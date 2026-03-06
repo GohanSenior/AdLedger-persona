@@ -6,7 +6,7 @@
                     <img src="assets/img/close-btn.svg" alt="Fermer">
                 </a>
             <?php else: ?>
-                <a href="index.php?action=dashboard" id="closeBtn">
+                <a href="index.php" id="closeBtn">
                     <img src="assets/img/close-btn.svg" alt="Fermer">
                 </a>
             <?php endif; ?>
