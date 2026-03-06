@@ -53,7 +53,7 @@
                             <?= in_array($currentAction, ['list-personas', 'list-personas-types', 'create-persona', 'list-operations']) && !isset($_GET['user_id']) ? 'active' : '' ?>"
                                 href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img class="me-1" src="assets/img/personas-alt.svg" alt="Personas">
-                                Mes personas
+                                Personas
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
@@ -109,7 +109,7 @@
                             <a class="nav-link fw-medium dropdown-toggle <?= in_array($currentAction, ['edit-user', 'profile-user', 'edit-company']) ? 'active' : '' ?>"
                                 href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img class="me-1" src="assets/img/profile-lnk.svg" alt="Profile">
-                                Mon profil
+                                Profil
                             </a>
                             <ul class="dropdown-menu">
                                 <li>

@@ -1,7 +1,7 @@
 <div class="container d-flex justify-content-center div-container">
     <div class="form-wrapper">
         <div class="card mb-5 rounded-4 persona-card">
-            <a href="index.php?action=dashboard" id="closeBtn">
+            <a href="index.php" id="closeBtn">
                 <img src="assets/img/close-btn.svg" alt="Fermer">
             </a>
             <h1 class="text-uppercase mb-4 fw-bold title-custom text-center">Gestion des utilisateurs</h1>
