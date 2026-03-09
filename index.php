@@ -151,7 +151,6 @@ try {
             $controller->searchCriteria();
             exit();
         default:
-            // Rediriger vers dashboard si connecté, sinon vers login
             if (isset($_SESSION['user_id'])) {
                 header('Location: index.php?action=dashboard');
             } else {

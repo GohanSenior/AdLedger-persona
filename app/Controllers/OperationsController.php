@@ -39,8 +39,8 @@ class OperationsController
         }
 
         $errors = [];
-        $id_operation = $_GET['id'] ?? null;
-        $redirect = $_GET['redirect'] ?? 'index.php?action=list-operations';
+        $id_operation = (int)($_GET['id'] ?? 0);
+        $redirect = sanitizeRedirect($_GET['redirect'] ?? null, 'index.php?action=list-operations');
 
         if (!$id_operation) {
             header('Location: index.php?action=list-operations');
@@ -93,7 +93,7 @@ class OperationsController
             exit();
         }
 
-        $id_operation = $_GET['id'] ?? null;
+        $id_operation = (int)($_GET['id'] ?? 0);
 
         if (!$id_operation) {
             header('Location: index.php?action=list-operations');
@@ -107,7 +107,7 @@ class OperationsController
         }
 
         $personas = $this->personaModel->getPersonasByOperationId($id_operation);
-        $redirect = $_GET['redirect'] ?? 'index.php?action=list-operations';
+        $redirect = sanitizeRedirect($_GET['redirect'] ?? null, 'index.php?action=list-operations');
         $content = __DIR__ . '/../Views/profile_operation.php';
         require_once __DIR__ . '/../Views/gabarit.php';
     }
@@ -123,7 +123,7 @@ class OperationsController
             exit();
         }
 
-        $id_operation = $_GET['id'] ?? null;
+        $id_operation = (int)($_GET['id'] ?? 0);
 
         if (!$id_operation) {
             header('Location: index.php?action=list-operations');

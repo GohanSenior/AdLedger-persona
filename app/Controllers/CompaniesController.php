@@ -50,7 +50,7 @@ class CompaniesController
             $companyAddress = trim($_POST['address'] ?? '');
             $companyZipcode = trim($_POST['zipcode'] ?? '');
             $companyCity = trim($_POST['city'] ?? '');
-            
+
             // Récupérer le logo actuel
             $currentCompany = $this->companyModel->getCompanyById($_SESSION['id_company']);
             $logoUrl = $currentCompany['logo_url'];
@@ -76,62 +76,61 @@ class CompaniesController
             if (isset($_FILES['logo_url']) && $_FILES['logo_url']['error'] === UPLOAD_ERR_OK) {
                 $allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
                 $maxFileSize = 5 * 1024 * 1024; // 5 Mo
-                
-                $fileType = $_FILES['logo_url']['type'];
+
+                $finfo = new finfo(FILEINFO_MIME_TYPE);
+                $fileType = $finfo->file($_FILES['logo_url']['tmp_name']); // ← analyse le fichier réel
                 $fileSize = $_FILES['logo_url']['size'];
                 $fileTmpName = $_FILES['logo_url']['tmp_name'];
                 $fileExtension = strtolower(pathinfo($_FILES['logo_url']['name'], PATHINFO_EXTENSION));
-                
+
                 // Validation du type de fichier
                 if (!in_array($fileType, $allowedTypes)) {
                     $errors[] = "Le fichier doit être une image (JPG, PNG, GIF, WEBP).";
                 }
-                
+
                 // Validation de la taille du fichier
                 if ($fileSize > $maxFileSize) {
                     $errors[] = "Le fichier ne doit pas dépasser 5 Mo.";
                 }
-                
+
                 // Si pas d'erreurs de validation, déplacer le fichier
                 if (empty($errors)) {
                     try {
                         $uploadDir = __DIR__ . '/../../assets/logo/';
-                        
+
                         // Créer le dossier s'il n'existe pas
                         if (!is_dir($uploadDir)) {
                             if (!mkdir($uploadDir, 0755, true)) {
                                 throw new Exception("Impossible de créer le dossier de destination.");
                             }
                         }
-                        
+
                         // Vérifier les permissions d'écriture
                         if (!is_writable($uploadDir)) {
                             throw new Exception("Le dossier de destination n'est pas accessible en écriture.");
                         }
-                        
+
                         // Générer un nom de fichier unique
                         $uniqueFileName = uniqid() . '_' . time() . '.' . $fileExtension;
                         $uploadPath = $uploadDir . $uniqueFileName;
-                        
+
                         // Déplacer le fichier
                         if (!move_uploaded_file($fileTmpName, $uploadPath)) {
                             throw new Exception("Impossible de déplacer le fichier uploadé.");
                         }
-                        
+
                         // Supprimer l'ancien logo s'il existe
                         if (!empty($logoUrl)) {
                             $oldLogoPath = __DIR__ . '/../../' . $logoUrl;
-                            if (file_exists($oldLogoPath)) {
-                                // Utiliser @ pour supprimer silencieusement sans bloquer le processus
-                                @unlink($oldLogoPath);
+                            if (file_exists($oldLogoPath) && !unlink($oldLogoPath)) {
+                                error_log("Impossible de supprimer l'ancien logo : " . $oldLogoPath);
                             }
                         }
-                        
+
                         // Mettre à jour le chemin du logo
                         $logoUrl = 'assets/logo/' . $uniqueFileName;
-                        
                     } catch (Exception $e) {
-                        $errors[] = "Erreur lors de l'upload du logo : " . $e->getMessage();
+                        $errors[] = "Erreur lors de l'upload du logo.";
                         error_log("Erreur upload logo entreprise: " . $e->getMessage());
                     }
                 }

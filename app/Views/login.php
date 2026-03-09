@@ -36,7 +36,6 @@
                                 name="password"
                                 class="form-control form-control-custom"
                                 autocomplete="current-password"
-                                value="<?= htmlspecialchars($_POST['password'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
                                 placeholder="Mot de passe"
                                 required>
                             <button type="button" class="toggle-password-btn">
