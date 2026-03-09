@@ -66,7 +66,7 @@
                                 <td><?= htmlspecialchars($persona['persona_age'], ENT_QUOTES, 'UTF-8') ?></td>
                                 <td><?= htmlspecialchars($persona['persona_job'], ENT_QUOTES, 'UTF-8') ?></td>
                                 <td class="non-wrap">
-                                    <a href="index.php?action=view-persona&id=<?= urlencode($persona['id_persona']) ?>"
+                                    <a href="index.php?action=view-persona&id=<?= urlencode($persona['id_persona']) ?>&redirect=<?= urlencode($_SERVER['REQUEST_URI']) ?>"
                                         class="icone-list">
                                         <img class="icone-img img-normal" src="assets/img/persona-book.svg" alt="Voir" title="Voir le persona">
                                         <img class="icone-img img-hover" src="assets/img/persona-book-hover.svg" alt="Voir" title="Voir le persona">

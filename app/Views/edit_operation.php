@@ -1,7 +1,7 @@
 <div class="container d-flex justify-content-center div-container">
     <div class="text-center form-wrapper">
         <div class="card p-4 mb-5 rounded-4 form-card">
-            <a href="javascript:history.back()" id="closeBtn">
+            <a href="<?= htmlspecialchars($redirect, ENT_QUOTES, 'UTF-8') ?>" id="closeBtn">
                 <img src="assets/img/close-btn.svg" alt="Fermer">
             </a>
             <h1 class="text-uppercase mb-4 fw-bold title-custom">Votre operation</h1>
@@ -12,7 +12,7 @@
                     <?php endforeach; ?>
                 </div>
             <?php endif; ?>
-            <form action="index.php?action=edit-operation&id=<?= htmlspecialchars($operation['id_operation'] ?? '', ENT_QUOTES, 'UTF-8') ?>" method="post">
+            <form action="index.php?action=edit-operation&id=<?= htmlspecialchars($operation['id_operation'] ?? '', ENT_QUOTES, 'UTF-8') ?>&redirect=<?= urlencode($redirect) ?>" method="post">
                 <div class="row g-3 mb-3">
                     <div class="col-md-12">
                         <label for="name" class="form-label text-start d-block">Nom <span class="required">*</span></label>

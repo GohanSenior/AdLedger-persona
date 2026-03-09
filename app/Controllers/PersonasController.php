@@ -547,6 +547,7 @@ class PersonasController
 
         // Afficher le formulaire de modification
         $editMode = true;
+        $redirect = $_GET['redirect'] ?? 'index.php?action=list-personas';
         $content = __DIR__ . '/../Views/persona_form.php';
         require_once __DIR__ . '/../Views/gabarit.php';
     }
@@ -702,6 +703,7 @@ class PersonasController
         $avatarUrl = $avatarBuilder->buildUrl();
 
         // Afficher le profil du persona
+        $redirect = $_GET['redirect'] ?? 'index.php?action=list-personas';
         $content = __DIR__ . '/../Views/profile_persona.php';
         require_once __DIR__ . '/../Views/gabarit.php';
     }
