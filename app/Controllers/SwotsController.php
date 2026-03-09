@@ -51,8 +51,8 @@ class SwotsController
             }
         }
 
-        $content = 'app/Views/profile_swot.php';
-        require_once 'app/Views/gabarit.php';
+        $content = __DIR__ . '/../Views/profile_swot.php';
+        require_once __DIR__ . '/../Views/gabarit.php';
     }
 
     // Affiche le formulaire de création/édition du SWOT
@@ -96,8 +96,8 @@ class SwotsController
         }
 
         $errors = [];
-        $content = 'app/Views/swot_form.php';
-        require_once 'app/Views/gabarit.php';
+        $content = __DIR__ . '/../Views/swot_form.php';
+        require_once __DIR__ . '/../Views/gabarit.php';
     }
 
     // Enregistre (crée ou met à jour) le SWOT et ses items
@@ -139,8 +139,8 @@ class SwotsController
                 'opportunity' => $_POST['items']['opportunity'] ?? [],
                 'threat'      => $_POST['items']['threat']      ?? [],
             ];
-            $content = 'app/Views/swot_form.php';
-            require_once 'app/Views/gabarit.php';
+            $content = __DIR__ . '/../Views/swot_form.php';
+            require_once __DIR__ . '/../Views/gabarit.php';
             return;
         }
 
@@ -171,7 +171,6 @@ class SwotsController
 
             $pdo->commit();
 
-            // $_SESSION['success_message'] = "L'analyse SWOT a bien été enregistrée.";
             header("Location: index.php?action=view-swot&company_id={$companyId}");
             exit();
         } catch (Exception $e) {
@@ -186,8 +185,8 @@ class SwotsController
                 'opportunity' => $_POST['items']['opportunity'] ?? [],
                 'threat'      => $_POST['items']['threat']      ?? [],
             ];
-            $content = 'app/Views/swot_form.php';
-            require_once 'app/Views/gabarit.php';
+            $content = __DIR__ . '/../Views/swot_form.php';
+            require_once __DIR__ . '/../Views/gabarit.php';
         }
     }
 
