@@ -1,7 +1,7 @@
 <div class="container d-flex justify-content-center div-container">
     <div class="form-wrapper">
         <div class="card mb-5 rounded-4 persona-card">
-            <a href="<?= (isset($viewingOtherUser) && $viewingOtherUser) ? 'index.php?action=list-users' : 'index.php' ?>" id="closeBtn">
+            <a href="<?= !empty($viewingOtherUser) ? 'index.php?action=list-users' : 'index.php' ?>" id="closeBtn">
                 <img src="assets/img/close-btn.svg" alt="Fermer">
             </a>
             <h1 class="text-uppercase mb-4 fw-bold title-custom text-center">
@@ -11,7 +11,7 @@
                     echo 'Personas types';
                 } elseif ($currentAction === 'list-all-personas') {
                     echo 'Tous les personas';
-                } elseif (isset($viewingOtherUser) && $viewingOtherUser && isset($targetUserName)) {
+                } elseif (!empty($viewingOtherUser) && isset($targetUserName) && $targetUserId != $_SESSION['user_id']) {
                     echo 'Personas de ' . htmlspecialchars($targetUserName, ENT_QUOTES, 'UTF-8');
                 } else {
                     echo 'Vos personas';
@@ -81,8 +81,9 @@
                                         // Pour la liste complète, seulement si le persona appartient à l'utilisateur
                                         $canEdit = $persona['id_user'] == $_SESSION['user_id'];
                                     } else {
-                                        // Pour "mes personas", toujours autoriser
-                                        $canEdit = true;
+                                        // Pour "mes personas", toujours autoriser, sauf si on voit les personas d'un autre utilisateur
+                                        // Un admin consultant sa propre liste via user_id= peut toujours éditer ses propres personas
+                                        $canEdit = empty($viewingOtherUser) || $persona['id_user'] == $_SESSION['user_id'];
                                     }
                                     
                                     if ($canEdit): 
