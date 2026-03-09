@@ -6,14 +6,14 @@ class Users extends Model
     // Récupère tous les utilisateurs
     public function getUsers()
     {
-        $sql = "SELECT * FROM users";
+        $sql = "SELECT id_user, username, lastname, firstname, email, phone, client, boss, enabled, role, id_company FROM users";
         return $this->pdo->query($sql)->fetchAll();
     }
 
     // Récupère un utilisateur par son ID
     public function getUserById($id)
     {
-        $sql = "SELECT * FROM users WHERE id_user = :id";
+        $sql = "SELECT id_user, username, lastname, firstname, email, phone, client, boss, enabled, role, id_company FROM users WHERE id_user = :id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $id]);
         return $stmt->fetch();
@@ -22,7 +22,7 @@ class Users extends Model
     // Récupère un utilisateur par son nom d'utilisateur
     public function getUserByUsername($username)
     {
-        $sql = "SELECT * FROM users WHERE username = :username";
+        $sql = "SELECT id_user, username, password, lastname, firstname, email, phone, enabled, role, id_company FROM users WHERE username = :username";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['username' => $username]);
         return $stmt->fetch();
@@ -31,7 +31,7 @@ class Users extends Model
     // Récupère un utilisateur par son adresse e-mail
     public function getUserByEmail($email)
     {
-        $sql = "SELECT * FROM users WHERE email = :email";
+        $sql = "SELECT id_user, username, password, lastname, firstname, email, phone, enabled, role, id_company FROM users WHERE email = :email";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['email' => $email]);
         return $stmt->fetch();
@@ -95,7 +95,7 @@ class Users extends Model
     // Récupère un utilisateur par son nom d'utilisateur ou email
     public function getUserByUsernameOrEmail($login)
     {
-        $sql = "SELECT * FROM users WHERE username = :login OR email = :login";
+        $sql = "SELECT id_user, username, lastname, firstname, email, phone, enabled, role, id_company FROM users WHERE username = :login OR email = :login";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['login' => $login]);
         return $stmt->fetch();
@@ -118,7 +118,7 @@ class Users extends Model
     // Récupère un utilisateur par son token de réinitialisation
     public function getUserByResetToken($token)
     {
-        $sql = "SELECT * FROM users WHERE reset_token = :token AND reset_token_expiry > NOW()";
+        $sql = "SELECT id_user, firstname, lastname, email FROM users WHERE reset_token = :token AND reset_token_expiry > NOW()";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['token' => $token]);
         return $stmt->fetch();

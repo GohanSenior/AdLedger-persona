@@ -13,7 +13,7 @@
     <title>AdLedger</title>
 </head>
 
-<body>
+<body data-logged-in="<?= isset($_SESSION['user_id']) ? 'true' : 'false' ?>">
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid flex-column align-items-stretch">
             <div class="d-flex justify-content-between mb-2 w-100">
@@ -174,7 +174,7 @@
     </footer>
     <script src="assets/js/datatables.min.js"></script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
-    <script>var userIsLoggedIn = <?= isset($_SESSION['user_id']) ? 'true' : 'false'; ?>;</script>  <!-- Variable JavaScript pour indiquer si l'utilisateur est connecté -->
+    <!-- Les données de session sont transmises via data-* sur <body> -->
     <script src="assets/js/script.js"></script>
 </body>
 
