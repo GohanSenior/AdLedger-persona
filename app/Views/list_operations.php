@@ -38,12 +38,12 @@
                             <tr>
                                 <td><?= htmlspecialchars($operation['operation_name'], ENT_QUOTES, 'UTF-8') ?></td>
                                 <td>
-                                    <a href="index.php?action=view-operation&id=<?= urlencode($operation['id_operation']) ?>"
+                                    <a href="index.php?action=view-operation&id=<?= urlencode($operation['id_operation']) ?>&redirect=<?= urlencode($_SERVER['REQUEST_URI']) ?>"
                                         class="icone-list">
                                         <img class="icone-img img-normal" src="assets/img/operation.svg" alt="Voir" title="Voir l'operation">
                                         <img class="icone-img img-hover" src="assets/img/operation-hover.svg" alt="Voir" title="Voir l'operation">
                                     </a>
-                                    <a href="index.php?action=edit-operation&id=<?= urlencode($operation['id_operation']) ?>"
+                                    <a href="index.php?action=edit-operation&id=<?= urlencode($operation['id_operation']) ?>&redirect=<?= urlencode($_SERVER['REQUEST_URI']) ?>"
                                         class="icone-list">
                                         <img class="icone-img img-normal" src="assets/img/operation-edit.svg" alt="Modifier" title="Modifier l'operation">
                                         <img class="icone-img img-hover" src="assets/img/operation-edit-hover.svg" alt="Modifier" title="Modifier l'operation">

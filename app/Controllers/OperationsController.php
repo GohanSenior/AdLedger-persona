@@ -40,6 +40,7 @@ class OperationsController
 
         $errors = [];
         $id_operation = $_GET['id'] ?? null;
+        $redirect = $_GET['redirect'] ?? 'index.php?action=list-operations';
 
         if (!$id_operation) {
             header('Location: index.php?action=list-operations');
@@ -65,7 +66,7 @@ class OperationsController
 
                     if ($updated) {
                         $_SESSION['success_message'] = "L'opération a été mise à jour avec succès.";
-                        header('Location: index.php?action=list-operations');
+                        header('Location: ' . $redirect);
                         exit();
                     } else {
                         $errors[] = "Erreur lors de la mise à jour de l'opération.";
@@ -106,6 +107,7 @@ class OperationsController
         }
 
         $personas = $this->personaModel->getPersonasByOperationId($id_operation);
+        $redirect = $_GET['redirect'] ?? 'index.php?action=list-operations';
         $content = __DIR__ . '/../Views/profile_operation.php';
         require_once __DIR__ . '/../Views/gabarit.php';
     }

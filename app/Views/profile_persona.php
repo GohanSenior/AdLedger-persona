@@ -1,7 +1,7 @@
 <div class="container d-flex justify-content-center div-container">
     <div class="profile-wrapper">
         <div class="card rounded-4 profile-card">
-            <a href="javascript:history.back()" id="closeBtn">
+            <a href="<?= htmlspecialchars($redirect, ENT_QUOTES, 'UTF-8') ?>" id="closeBtn">
                 <img src="assets/img/close-btn.svg" alt="Fermer">
             </a>
 
