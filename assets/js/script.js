@@ -473,7 +473,8 @@ if (document.querySelector("[data-criteria-types]")) {
 }
 
 // Gestion de l'inactivité et déconnexion automatique
-if (window.userIsLoggedIn) {
+const userIsLoggedIn = document.body.dataset.loggedIn === 'true';
+if (userIsLoggedIn) {
   (function () {
     const WARNING_DELAY = 25 * 60 * 1000; // Avertissement à 25 min
     const LOGOUT_DELAY = 30 * 60 * 1000; // Déconnexion à 30 min
