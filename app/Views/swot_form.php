@@ -41,7 +41,7 @@
 
                     <!-- Séparateur interne -->
                     <div class="col-md-12 text-start mt-4">
-                        <p class="form-label fw-semibold mb-1" style="color: var(--color-violet-1)">
+                        <p class="form-label fw-semibold mb-1 swot-section-internal">
                             <i class="bi bi-circle-half me-1"></i>
                             Facteurs internes
                         </p>
@@ -49,9 +49,9 @@
                     </div>
 
                     <!-- Forces -->
-                    <div class="col-md-6 text-start">
+                    <div class="col-md-12 text-start">
                         <label class="form-label d-flex align-items-center gap-2 swot-label swot-label-positive">
-                            <span class="swot-quadrant-icon swot-strengths" style="width:28px;height:28px;font-size:.85rem;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;">
+                            <span class="swot-quadrant-icon swot-strengths">
                                 <i class="bi bi-lightning-charge-fill"></i>
                             </span>
                             Forces
@@ -64,21 +64,21 @@
                                            class="form-control form-control-sm swot-item-input"
                                            value="<?= htmlspecialchars($val, ENT_QUOTES, 'UTF-8') ?>"
                                            placeholder="Saisir une force…">
-                                    <button type="button" class="btn-swot-delete" onclick="removeItem(this)" title="Supprimer">
+                                    <button type="button" class="btn-swot-delete" title="Supprimer">
                                         <i class="bi bi-x-lg"></i>
                                     </button>
                                 </div>
                             <?php endforeach; ?>
                         </div>
-                        <button type="button" class="btn btn-sm btn-add-swot-item" onclick="addItem('strength', 'Saisir une force…')">
+                        <button type="button" class="btn btn-sm btn-add-swot-item" data-category="strength" data-placeholder="Saisir une force…">
                             <i class="bi bi-plus-lg me-1"></i> Ajouter
                         </button>
                     </div>
 
                     <!-- Faiblesses -->
-                    <div class="col-md-6 text-start">
+                    <div class="col-md-12 text-start">
                         <label class="form-label d-flex align-items-center gap-2 swot-label swot-label-negative">
-                            <span class="swot-quadrant-icon swot-weaknesses" style="width:28px;height:28px;font-size:.85rem;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;">
+                            <span class="swot-quadrant-icon swot-weaknesses">
                                 <i class="bi bi-exclamation-triangle-fill"></i>
                             </span>
                             Faiblesses
@@ -91,13 +91,13 @@
                                            class="form-control form-control-sm swot-item-input"
                                            value="<?= htmlspecialchars($val, ENT_QUOTES, 'UTF-8') ?>"
                                            placeholder="Saisir une faiblesse…">
-                                    <button type="button" class="btn-swot-delete" onclick="removeItem(this)" title="Supprimer">
+                                    <button type="button" class="btn-swot-delete" title="Supprimer">
                                         <i class="bi bi-x-lg"></i>
                                     </button>
                                 </div>
                             <?php endforeach; ?>
                         </div>
-                        <button type="button" class="btn btn-sm btn-add-swot-item" onclick="addItem('weakness', 'Saisir une faiblesse…')">
+                        <button type="button" class="btn btn-sm btn-add-swot-item" data-category="weakness" data-placeholder="Saisir une faiblesse…">
                             <i class="bi bi-plus-lg me-1"></i> Ajouter
                         </button>
                     </div>
@@ -109,7 +109,7 @@
 
                     <!-- Séparateur externe -->
                     <div class="col-md-12 text-start">
-                        <p class="form-label fw-semibold mb-1" style="color: var(--color-magenta)">
+                        <p class="form-label fw-semibold mb-1 swot-section-external">
                             <i class="bi bi-globe me-1"></i>
                             Facteurs externes
                         </p>
@@ -117,9 +117,9 @@
                     </div>
 
                     <!-- Opportunités -->
-                    <div class="col-md-6 text-start">
+                    <div class="col-md-12 text-start">
                         <label class="form-label d-flex align-items-center gap-2 swot-label swot-label-positive">
-                            <span class="swot-quadrant-icon swot-opportunities" style="width:28px;height:28px;font-size:.85rem;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;">
+                            <span class="swot-quadrant-icon swot-opportunities">
                                 <i class="bi bi-arrow-up-right-circle-fill"></i>
                             </span>
                             Opportunités
@@ -132,21 +132,21 @@
                                            class="form-control form-control-sm swot-item-input"
                                            value="<?= htmlspecialchars($val, ENT_QUOTES, 'UTF-8') ?>"
                                            placeholder="Saisir une opportunité…">
-                                    <button type="button" class="btn-swot-delete" onclick="removeItem(this)" title="Supprimer">
+                                    <button type="button" class="btn-swot-delete" title="Supprimer">
                                         <i class="bi bi-x-lg"></i>
                                     </button>
                                 </div>
                             <?php endforeach; ?>
                         </div>
-                        <button type="button" class="btn btn-sm btn-add-swot-item" onclick="addItem('opportunity', 'Saisir une opportunité…')">
+                        <button type="button" class="btn btn-sm btn-add-swot-item" data-category="opportunity" data-placeholder="Saisir une opportunité…">
                             <i class="bi bi-plus-lg me-1"></i> Ajouter
                         </button>
                     </div>
 
                     <!-- Menaces -->
-                    <div class="col-md-6 text-start">
+                    <div class="col-md-12 text-start">
                         <label class="form-label d-flex align-items-center gap-2 swot-label swot-label-negative">
-                            <span class="swot-quadrant-icon swot-threats" style="width:28px;height:28px;font-size:.85rem;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;">
+                            <span class="swot-quadrant-icon swot-threats">
                                 <i class="bi bi-shield-exclamation"></i>
                             </span>
                             Menaces
@@ -159,13 +159,13 @@
                                            class="form-control form-control-sm swot-item-input"
                                            value="<?= htmlspecialchars($val, ENT_QUOTES, 'UTF-8') ?>"
                                            placeholder="Saisir une menace…">
-                                    <button type="button" class="btn-swot-delete" onclick="removeItem(this)" title="Supprimer">
+                                    <button type="button" class="btn-swot-delete" title="Supprimer">
                                         <i class="bi bi-x-lg"></i>
                                     </button>
                                 </div>
                             <?php endforeach; ?>
                         </div>
-                        <button type="button" class="btn btn-sm btn-add-swot-item" onclick="addItem('threat', 'Saisir une menace…')">
+                        <button type="button" class="btn btn-sm btn-add-swot-item" data-category="threat" data-placeholder="Saisir une menace…">
                             <i class="bi bi-plus-lg me-1"></i> Ajouter
                         </button>
                     </div>
@@ -194,24 +194,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    function addItem(category, placeholder) {
-        const container = document.getElementById('items-' + category);
-        const row = document.createElement('div');
-        row.className = 'swot-item-row';
-        row.innerHTML =
-            '<input type="text" name="items[' + category + '][]" ' +
-                   'class="form-control form-control-sm swot-item-input" ' +
-                   'placeholder="' + placeholder + '">' +
-            '<button type="button" class="btn-swot-delete" onclick="removeItem(this)" title="Supprimer">' +
-                '<i class="bi bi-x-lg"></i>' +
-            '</button>';
-        container.appendChild(row);
-        row.querySelector('input').focus();
-    }
-
-    function removeItem(btn) {
-        btn.closest('.swot-item-row').remove();
-    }
-</script>

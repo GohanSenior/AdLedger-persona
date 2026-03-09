@@ -1025,61 +1025,6 @@ a.info-value:hover {
   color: var(--color-magenta);
 }
 
-/* Mobile : sous 640px — 1 colonne, plus d'en-têtes ni d'étiquettes */
-@media (max-width: 640px) {
-  .swot-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .swot-axis-corner,
-  .swot-axis-row,
-  .swot-axis-col {
-    display: none;
-  }
-
-  /* Afficher les badges dans les quadrants */
-  .swot-axis-badge {
-    display: inline-block;
-  }
-
-  .swot-quadrant {
-    padding: 0.85rem;
-  }
-
-  .swot-list li {
-    font-size: 0.88rem;
-  }
-}
-
-/* ===== RESPONSIVE ===== */
-@media (max-width: 992px) {
-  .persona-card {
-    padding-left: 0;
-    padding-right: 0;
-  }
-
-  .icone-img {
-    margin-right: 0;
-  }
-
-  .table-responsive {
-    font-size: 14px;
-  }
-
-  .form-label-custom {
-    font-size: 14px;
-  }
-
-  .div-container {
-    padding-top: 3rem;
-    padding-bottom: 3rem;
-  }
-  
-  .profile-header {
-    padding: 2rem 1.5rem 1rem;
-  }
-}
-
 /* ===== FORMULAIRE SWOT ===== */
 
 /* Grille 2 × 2 pour les quadrants éditables */
@@ -1171,7 +1116,78 @@ a.info-value:hover {
   color: var(--color-pink);
 }
 
-/* Responsive : 1 colonne sous 600 px */
+/* Icônes dans les labels du formulaire (taille réduite) */
+.swot-label .swot-quadrant-icon {
+  width: 28px;
+  height: 28px;
+  font-size: .85rem;
+  border-radius: 6px;
+  display: inline-flex;
+}
+
+/* Couleurs des titres de section interne/externe */
+.swot-section-internal {
+  color: var(--color-violet-1);
+}
+
+.swot-section-external {
+  color: var(--color-magenta);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 992px) {
+  .persona-card {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .icone-img {
+    margin-right: 0;
+  }
+
+  .table-responsive {
+    font-size: 14px;
+  }
+
+  .form-label-custom {
+    font-size: 14px;
+  }
+
+  .div-container {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+  
+  .profile-header {
+    padding: 2rem 1.5rem 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .swot-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .swot-axis-corner,
+  .swot-axis-row,
+  .swot-axis-col {
+    display: none;
+  }
+
+  /* Afficher les badges dans les quadrants */
+  .swot-axis-badge {
+    display: inline-block;
+  }
+
+  .swot-quadrant {
+    padding: 0.85rem;
+  }
+
+  .swot-list li {
+    font-size: 0.88rem;
+  }
+}
+
 @media (max-width: 600px) {
   .swot-form-grid {
     grid-template-columns: 1fr;

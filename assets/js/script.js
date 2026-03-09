@@ -505,3 +505,49 @@ if (window.userIsLoggedIn) {
     resetTimers(); // Démarrer au chargement de la page
   })();
 }
+
+/* ===== FORMULAIRE SWOT ===== */
+
+(function () {
+  const swotForm = document.getElementById('swotForm');
+  if (!swotForm) return;
+
+  // Délégation d'événement pour les boutons supprimer (statiques et dynamiques)
+  ['strength', 'weakness', 'opportunity', 'threat'].forEach(function (category) {
+    const container = document.getElementById('items-' + category);
+    if (container) {
+      container.addEventListener('click', function (e) {
+        const btn = e.target.closest('.btn-swot-delete');
+        if (btn) btn.closest('.swot-item-row').remove();
+      });
+    }
+  });
+
+  // Boutons "Ajouter"
+  swotForm.querySelectorAll('.btn-add-swot-item').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      const category = btn.dataset.category;
+      const placeholder = btn.dataset.placeholder;
+      const container = document.getElementById('items-' + category);
+      const row = document.createElement('div');
+      row.className = 'swot-item-row';
+
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.name = 'items[' + category + '][]';
+      input.className = 'form-control form-control-sm swot-item-input';
+      input.placeholder = placeholder;
+
+      const deleteBtn = document.createElement('button');
+      deleteBtn.type = 'button';
+      deleteBtn.className = 'btn-swot-delete';
+      deleteBtn.title = 'Supprimer';
+      deleteBtn.innerHTML = '<i class="bi bi-x-lg"></i>';
+
+      row.appendChild(input);
+      row.appendChild(deleteBtn);
+      container.appendChild(row);
+      input.focus();
+    });
+  });
+})();
