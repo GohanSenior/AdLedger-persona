@@ -141,6 +141,7 @@ class UsersController
                     $pdo->commit();
 
                     // Stocker les informations de l'utilisateur dans la session
+                    session_regenerate_id(true); // ← génère un NOUVEL ID, invalide l'ancien
                     $_SESSION['user_id'] = $userId;
                     $_SESSION['username'] = $username;
                     $_SESSION['lastname'] = $lastname;
@@ -159,7 +160,8 @@ class UsersController
                     if ($pdo->inTransaction()) {
                         $pdo->rollBack();
                     }
-                    $errors[] = "Une erreur est survenue lors de l'inscription : " . $e->getMessage();
+                    $errors[] = "Une erreur est survenue lors de l'inscription. Veuillez réessayer.";
+                    error_log("Erreur inscription: " . $e->getMessage());
                 }
             }
         }
@@ -196,6 +198,7 @@ class UsersController
                     // Vérifier si l'utilisateur est actif
                     if ($user['enabled'] == 1) {
                         // Stocker les informations de l'utilisateur dans la session
+                        session_regenerate_id(true); // ← génère un NOUVEL ID, invalide l'ancien
                         $_SESSION['user_id'] = $user['id_user'];
                         $_SESSION['username'] = $user['username'];
                         $_SESSION['lastname'] = $user['lastname'];
@@ -300,7 +303,8 @@ class UsersController
                                 $errors[] = "Erreur lors de l'envoi de l'email. Veuillez réessayer.";
                             }
                         } catch (Exception $e) {
-                            $errors[] = "Erreur lors de l'envoi de l'email : " . $e->getMessage();
+                            $errors[] = "Erreur lors de l'envoi de l'email. Veuillez réessayer.";
+                            error_log("Erreur envoi email reset: " . $e->getMessage());
                         }
                     } else {
                         $errors[] = "Erreur lors de la création du token. Veuillez réessayer.";
@@ -673,9 +677,9 @@ class UsersController
             exit();
         }
 
-        $id = $_GET['id'] ?? null;
+        $id = (int)($_GET['id'] ?? 0);
         $enabled = $_GET['enabled'] ?? null;
-        $redirect = $_GET['redirect'] ?? 'index.php?action=list-users';
+        $redirect = sanitizeRedirect($_GET['redirect'] ?? null, 'index.php?action=list-users');
 
         if ($id && $enabled !== null) {
             // Vérifier que l'utilisateur n'essaie pas de se désactiver lui-même

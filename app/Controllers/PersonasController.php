@@ -198,7 +198,8 @@ class PersonasController
                     if ($pdo->inTransaction()) {
                         $pdo->rollBack();
                     }
-                    $errors[] = "Une erreur est survenue : " . $e->getMessage();
+                    $errors[] = "Une erreur est survenue. Veuillez réessayer.";
+                    error_log("Erreur createPersona: " . $e->getMessage());
                 }
             }
         }
@@ -335,7 +336,7 @@ class PersonasController
         }
 
         $errors = [];
-        $id_persona = $_GET['id'] ?? null;
+        $id_persona = (int)($_GET['id'] ?? 0);
 
         if (!$id_persona) {
             header('Location: index.php?action=list-personas');
@@ -505,7 +506,7 @@ class PersonasController
                     $_SESSION['success_message'] = "Le persona a bien été modifié.";
 
                     // Rediriger vers la page d'origine ou la liste des personas
-                    $redirectUrl = $_GET['redirect'] ?? 'index.php?action=list-personas';
+                    $redirectUrl = sanitizeRedirect($_GET['redirect'] ?? null, 'index.php?action=list-personas');
                     header('Location: ' . $redirectUrl);
                     exit();
                 } catch (Exception $e) {
@@ -513,7 +514,8 @@ class PersonasController
                     if ($pdo->inTransaction()) {
                         $pdo->rollBack();
                     }
-                    $errors[] = "Une erreur est survenue : " . $e->getMessage();
+                    $errors[] = "Une erreur est survenue. Veuillez réessayer.";
+                    error_log("Erreur editPersona: " . $e->getMessage());
                 }
             }
         }
@@ -547,7 +549,7 @@ class PersonasController
 
         // Afficher le formulaire de modification
         $editMode = true;
-        $redirect = $_GET['redirect'] ?? 'index.php?action=list-personas';
+        $redirect = sanitizeRedirect($_GET['redirect'] ?? null, 'index.php?action=list-personas');
         $content = __DIR__ . '/../Views/persona_form.php';
         require_once __DIR__ . '/../Views/gabarit.php';
     }
@@ -563,7 +565,7 @@ class PersonasController
             exit();
         }
 
-        $id_persona = $_GET['id'] ?? null;
+        $id_persona = (int)($_GET['id'] ?? 0);
 
         if (!$id_persona) {
             header('Location: index.php?action=list-personas');
@@ -618,7 +620,7 @@ class PersonasController
 
             if ($criteriaRemoved === false) {
                 $_SESSION['error_message'] = "Erreur lors de la suppression des critères associés.";
-                $redirectUrl = $_GET['redirect'] ?? 'index.php?action=' . $redirectAction;
+                $redirectUrl = sanitizeRedirect($_GET['redirect'] ?? null, 'index.php?action=' . $redirectAction);
                 header('Location: ' . $redirectUrl);
                 exit();
             }
@@ -637,7 +639,7 @@ class PersonasController
         }
 
         // Rediriger vers la page d'origine ou la liste appropriée
-        $redirectUrl = $_GET['redirect'] ?? 'index.php?action=' . $redirectAction;
+        $redirectUrl = sanitizeRedirect($_GET['redirect'] ?? null, 'index.php?action=' . $redirectAction);
         header('Location: ' . $redirectUrl);
         exit();
     }
@@ -653,7 +655,7 @@ class PersonasController
             exit();
         }
 
-        $id_persona = $_GET['id'] ?? null;
+        $id_persona = (int)($_GET['id'] ?? 0);
 
         if (!$id_persona) {
             header('Location: index.php?action=list-personas');
@@ -664,11 +666,14 @@ class PersonasController
         $persona = $this->personaModel->getPersonaById($id_persona);
 
         // Vérifier que le persona appartient à l'utilisateur OU que c'est un persona type OU que l'utilisateur est admin
+        if (!$persona) {
+            header('Location: index.php?action=list-personas');
+            exit();
+        }
         $canView = $persona['id_user'] == $_SESSION['user_id'] // Le persona appartient à l'utilisateur
             || $persona['is_type'] == 1 // C'est un persona type (public)
             || (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'); // L'utilisateur est admin
-
-        if (!$persona || !$canView) {
+        if (!$canView) {
             header('Location: index.php?action=list-personas');
             exit();
         }
@@ -703,7 +708,7 @@ class PersonasController
         $avatarUrl = $avatarBuilder->buildUrl();
 
         // Afficher le profil du persona
-        $redirect = $_GET['redirect'] ?? 'index.php?action=list-personas';
+        $redirect = sanitizeRedirect($_GET['redirect'] ?? null, 'index.php?action=list-personas');
         $content = __DIR__ . '/../Views/profile_persona.php';
         require_once __DIR__ . '/../Views/gabarit.php';
     }
@@ -724,7 +729,7 @@ class PersonasController
             exit();
         }
 
-        $id_persona = $_GET['id'] ?? null;
+        $id_persona = (int)($_GET['id'] ?? 0);
 
         if (!$id_persona) {
             header('Location: index.php?action=list-personas');
@@ -784,7 +789,7 @@ class PersonasController
             exit();
         }
 
-        $id_persona = $_GET['id'] ?? null;
+        $id_persona = (int)($_GET['id'] ?? 0);
 
         if (!$id_persona) {
             header('Location: index.php?action=list-personas-types');
