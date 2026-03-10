@@ -20,7 +20,7 @@ class PersonasController
     /**
      * Affiche le formulaire et traite la création d'un nouveau persona
      */
-    public function createPersona()
+    public function createPersona(): void
     {
         // Vérifier que l'utilisateur est connecté
         if (!UsersController::isLoggedIn()) {
@@ -46,8 +46,8 @@ class PersonasController
             if (empty($firstname) || empty($lastname) || empty($age) || empty($sexe) || empty($city) || empty($job)) {
                 $errors[] = "Veuillez remplir tous les champs obligatoires.";
             } else {
-                if (!is_numeric($age) || $age < 0) {
-                    $errors[] = "L'âge doit être un nombre positif.";
+                if (!is_numeric($age) || $age < 0 || $age > 100) {
+                    $errors[] = "L'âge doit être un nombre entre 0 et 100.";
                 }
                 if (!in_array($sexe, ['homme', 'femme', 'autre'])) {
                     $errors[] = "Le sexe doit être 'homme', 'femme' ou 'autre'.";
@@ -220,7 +220,7 @@ class PersonasController
     /**
      * Endpoint AJAX : recherche de critères par type pour l'autocomplétion
      */
-    public function searchCriteria()
+    public function searchCriteria(): void
     {
         if (!UsersController::isLoggedIn()) {
             http_response_code(401);
@@ -248,7 +248,7 @@ class PersonasController
      * Affiche la liste des personas de l'utilisateur
      * Si un admin consulte avec un paramètre user_id, affiche les personas de cet utilisateur
      */
-    public function listPersonas()
+    public function listPersonas(): void
     {
         // Vérifier que l'utilisateur est connecté
         if (!UsersController::isLoggedIn()) {
@@ -286,7 +286,7 @@ class PersonasController
     /**
      * Affiche la liste des personas types (visibles par tous les utilisateurs)
      */
-    public function listPersonasTypes()
+    public function listPersonasTypes(): void
     {
         // Vérifier que l'utilisateur est connecté
         if (!UsersController::isLoggedIn()) {
@@ -305,7 +305,7 @@ class PersonasController
     /**
      * Affiche la liste de tous les personas (pour les admins)
      */
-    public function listAllPersonas()
+    public function listAllPersonas(): void
     {
         // Vérifier que l'utilisateur est connecté
         if (!UsersController::isLoggedIn()) {
@@ -331,7 +331,7 @@ class PersonasController
     /**
      * Affiche le formulaire de modification d'un persona
      */
-    public function editPersona()
+    public function editPersona(): void
     {
         // Vérifier que l'utilisateur est connecté
         if (!UsersController::isLoggedIn()) {
@@ -382,8 +382,8 @@ class PersonasController
             if (empty($firstname) || empty($lastname) || empty($age) || empty($sexe) || empty($city) || empty($job)) {
                 $errors[] = "Veuillez remplir tous les champs obligatoires.";
             } else {
-                if (!is_numeric($age) || $age < 0) {
-                    $errors[] = "L'âge doit être un nombre positif.";
+                if (!is_numeric($age) || $age < 0 || $age > 100) {
+                    $errors[] = "L'âge doit être un nombre entre 0 et 100.";
                 }
                 if (!in_array($sexe, ['homme', 'femme', 'autre'])) {
                     $errors[] = "Le sexe doit être 'homme', 'femme' ou 'autre'.";
@@ -565,7 +565,7 @@ class PersonasController
     /**
      * Supprime un persona
      */
-    public function deletePersona()
+    public function deletePersona(): void
     {
         // Vérifier que l'utilisateur est connecté
         if (!UsersController::isLoggedIn()) {
@@ -655,7 +655,7 @@ class PersonasController
     /**
      * Affiche le profil d'un persona
      */
-    public function viewPersona()
+    public function viewPersona(): void
     {
         // Vérifier que l'utilisateur est connecté
         if (!UsersController::isLoggedIn()) {
@@ -724,7 +724,7 @@ class PersonasController
     /**
      * Créer une copie d'un persona en persona type (admin uniquement)
      */
-    public function togglePersonaNormalToType()
+    public function togglePersonaNormalToType(): void
     {
         // Vérifier que l'utilisateur est connecté
         if (!UsersController::isLoggedIn()) {
@@ -789,7 +789,7 @@ class PersonasController
     /**
      * Créer une copie d'un persona type en persona normal (tous les utilisateurs)
      */
-    public function togglePersonaTypeToNormal()
+    public function togglePersonaTypeToNormal(): void
     {
         // Vérifier que l'utilisateur est connecté
         if (!UsersController::isLoggedIn()) {

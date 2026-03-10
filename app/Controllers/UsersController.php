@@ -14,7 +14,7 @@ class UsersController
     /**
      * Affiche le formulaire et traite la création d'un nouveau compte utilisateur et de son entreprise
      */
-    public function register()
+    public function register(): void
     {
         $errors = [];
         $success = false;
@@ -174,7 +174,7 @@ class UsersController
     /**
      * Connecte un utilisateur
      */
-    public function login()
+    public function login(): void
     {
         $errors = [];
 
@@ -242,7 +242,7 @@ class UsersController
     /**
      * Déconnecte l'utilisateur
      */
-    public function logout()
+    public function logout(): void
     {
         $inactivity = isset($_GET['inactivity']) && $_GET['inactivity'] === '1';
 
@@ -258,7 +258,10 @@ class UsersController
         exit();
     }
 
-    public function forgotPassword()
+    /**
+     * Affiche le formulaire de mot de passe oublié et traite la demande
+     */
+    public function forgotPassword(): void
     {
         $errors = [];
         $success = false;
@@ -338,7 +341,7 @@ class UsersController
     /**
      * Réinitialise le mot de passe avec le token
      */
-    public function resetPassword()
+    public function resetPassword(): void
     {
         $errors = [];
         $success = false;
@@ -398,7 +401,7 @@ class UsersController
     /**
      * Vérifie si un utilisateur est connecté et gère l'expiration de la session après une période d'inactivité
      */
-    public static function isLoggedIn()
+    public static function isLoggedIn(): bool
     {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
@@ -423,7 +426,7 @@ class UsersController
     /**
      * Vérifie si l'utilisateur est un administrateur
      */
-    public static function isAdmin()
+    public static function isAdmin(): bool
     {
         return isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
     }
@@ -442,7 +445,7 @@ class UsersController
     /**
      * Affiche le tableau de bord
      */
-    public function dashboard()
+    public function dashboard(): void
     {
         // Vérifier que l'utilisateur est connecté
         if (!self::isLoggedIn()) {
@@ -464,7 +467,7 @@ class UsersController
     /**
      * Affiche sa fiche utilisateur
      */
-    public function profileUser()
+    public function profileUser(): void
     {
         $errors = [];
 
@@ -497,7 +500,7 @@ class UsersController
     /**
      * Affiche le formulaire de modification du profil utilisateur
      */
-    public function editUser()
+    public function editUser(): void
     {
         // Vérifier que l'utilisateur est connecté
         if (!self::isLoggedIn()) {
@@ -611,7 +614,7 @@ class UsersController
     /**
      * Affiche la liste de tous les utilisateurs (admin uniquement)
      */
-    public function listUsers()
+    public function listUsers(): void
     {
         // Vérifier que l'utilisateur est admin
         if (!self::isAdmin()) {
@@ -641,7 +644,7 @@ class UsersController
     /**
      * Affiche le profil d'un utilisateur spécifique (admin uniquement)
      */
-    public function viewUser()
+    public function viewUser(): void
     {
         // Vérifier que l'utilisateur est admin
         if (!self::isAdmin()) {
@@ -682,7 +685,7 @@ class UsersController
     /**
      * Active ou désactive un utilisateur (admin uniquement)
      */
-    public function toggleUserEnabled()
+    public function toggleUserEnabled(): void
     {
         // Vérifier que l'utilisateur est admin
         if (!self::isAdmin()) {

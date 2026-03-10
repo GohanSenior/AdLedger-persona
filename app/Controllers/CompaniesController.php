@@ -13,7 +13,7 @@ class CompaniesController
      * Crée une nouvelle entreprise et retourne son ID
      * @return int|false L'ID de l'entreprise créée ou false en cas d'échec
      */
-    public function createCompany($companyName, $companyAddress, $companyZipcode, $companyCity)
+    public function createCompany(string $companyName, string $companyAddress, string $companyZipcode, string $companyCity): int|false
     {
         $created = $this->companyModel->createCompany(
             $companyName,
@@ -34,7 +34,7 @@ class CompaniesController
     /**
      * Affiche le formulaire de modification de l'entreprise
      */
-    public function editCompany()
+    public function editCompany(): void
     {
         // Vérifier que l'utilisateur est connecté
         if (!UsersController::isLoggedIn()) {

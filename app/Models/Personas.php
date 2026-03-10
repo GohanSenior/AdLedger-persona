@@ -3,14 +3,14 @@
 class Personas extends Model
 {
     // Récupère tous les personas
-    public function getPersonas()
+    public function getPersonas(): array
     {
         $sql = "SELECT * FROM personas";
         return $this->pdo->query($sql)->fetchAll();
     }
 
     // Récupère les personas d'un utilisateur spécifique
-    public function getPersonasByIdUser($id_user)
+    public function getPersonasByIdUser(int $id_user): array
     {
         $sql = "SELECT * FROM personas WHERE id_user = :id_user AND is_type = 0";
         $stmt = $this->pdo->prepare($sql);
@@ -19,21 +19,21 @@ class Personas extends Model
     }
 
     // Récupère les personas types
-    public function getPersonasTypes()
+    public function getPersonasTypes(): array
     {
         $sql = "SELECT * FROM personas WHERE is_type = 1";
         return $this->pdo->query($sql)->fetchAll();
     }
 
     // Récupère tous les personas normaux (non-types)
-    public function getNormalPersonas()
+    public function getNormalPersonas(): array
     {
         $sql = "SELECT * FROM personas WHERE is_type = 0";
         return $this->pdo->query($sql)->fetchAll();
     }
 
     // Récupère les personas d'une opération spécifique
-    public function getPersonasByOperationId($id_operation)
+    public function getPersonasByOperationId(int $id_operation): array
     {
         $sql = "SELECT * FROM personas WHERE id_operation = :id_operation";
         $stmt = $this->pdo->prepare($sql);
@@ -42,7 +42,7 @@ class Personas extends Model
     }
 
     // Récupère un persona par son ID
-    public function getPersonaById($id_persona)
+    public function getPersonaById(int $id_persona): array|false
     {
         $sql = "SELECT * FROM personas WHERE id_persona = :id_persona";
         $stmt = $this->pdo->prepare($sql);
@@ -51,7 +51,7 @@ class Personas extends Model
     }
 
     // Crée un nouveau persona
-    public function createPersona($firstname, $lastname, $age, $sexe, $city, $job, $id_user, $id_operation = null, $avatar_options = null)
+    public function createPersona(string $firstname, string $lastname, int $age, string $sexe, string $city, string $job, int $id_user, ?int $id_operation = null, ?string $avatar_options = null): bool
     {
         $sql = "INSERT INTO personas (persona_firstname, persona_lastname, persona_age, persona_sexe, persona_city, persona_job, persona_created_at, id_user, id_operation, avatar_options) 
                 VALUES (:firstname, :lastname, :age, :sexe, :city, :job, NOW(), :id_user, :id_operation, :avatar_options)";
@@ -70,7 +70,7 @@ class Personas extends Model
     }
 
     // Met à jour un persona existant
-    public function updatePersona($id_persona, $firstname, $lastname, $age, $sexe, $city, $job, $id_operation = null, $avatar_options = null)
+    public function updatePersona(int $id_persona, string $firstname, string $lastname, int $age, string $sexe, string $city, string $job, ?int $id_operation = null, ?string $avatar_options = null): bool
     {
         $sql = "UPDATE personas SET 
                     persona_firstname = :firstname, 
@@ -97,7 +97,7 @@ class Personas extends Model
     }
 
     // Supprime un persona
-    public function deletePersona($id_persona)
+    public function deletePersona(int $id_persona): bool
     {
         $sql = "DELETE FROM personas WHERE id_persona = :id_persona";
         $stmt = $this->pdo->prepare($sql);
@@ -105,7 +105,7 @@ class Personas extends Model
     }
 
     // Dissocie une opération de tous les personas qui lui sont associés
-    public function removeOperationFromPersonas($id_operation)
+    public function removeOperationFromPersonas(int $id_operation): bool
     {
         $sql = "UPDATE personas SET id_operation = NULL WHERE id_operation = :id_operation";
         $stmt = $this->pdo->prepare($sql);
@@ -113,7 +113,7 @@ class Personas extends Model
     }
 
     // Associe un critère à un persona
-    public function associateCriteria($id_persona, $id_criterion)
+    public function associateCriteria(int $id_persona, int $id_criterion): bool
     {
         $sql = "INSERT INTO associer (id_persona, id_criterion) VALUES (:id_persona, :id_criterion)";
         $stmt = $this->pdo->prepare($sql);
@@ -124,7 +124,7 @@ class Personas extends Model
     }
 
     // Récupère les critères associés à un persona
-    public function getCriteriaByPersona($id_persona)
+    public function getCriteriaByPersona(int $id_persona): array
     {
         $sql = "SELECT c.*, ct.criteria_type_name 
                 FROM criteria c 
@@ -137,7 +137,7 @@ class Personas extends Model
     }
 
     // Supprime les critères associés à un persona
-    public function removeCriteriaByPersona($id_persona)
+    public function removeCriteriaByPersona(int $id_persona): bool
     {
         $sql = "DELETE FROM associer WHERE id_persona = :id_persona";
         $stmt = $this->pdo->prepare($sql);
@@ -145,7 +145,7 @@ class Personas extends Model
     }
 
     // Met à jour le statut typed d'un persona
-    public function updateTypedStatus($id_persona, $typedStatus)
+    public function updateTypedStatus(int $id_persona, int $typedStatus): bool
     {
         $sql = "UPDATE personas SET typed = :typedStatus WHERE id_persona = :id_persona";
         $stmt = $this->pdo->prepare($sql);
@@ -156,7 +156,7 @@ class Personas extends Model
     }
 
     // créer un persona type à partir d'un persona existant
-    public function createPersonaTypeFromExisting($id_persona, $id_user_admin)
+    public function createPersonaTypeFromExisting(int $id_persona, int $id_user_admin): int|false
     {
         // Récupérer les données du persona existant
         $persona = $this->getPersonaById($id_persona);
@@ -200,7 +200,7 @@ class Personas extends Model
     }
 
     // Créer un persona normal à partir d'un persona type
-    public function createNormalPersonaFromType($id_persona_type, $id_user)
+    public function createNormalPersonaFromType(int $id_persona_type, int $id_user): int|false
     {
         // Récupérer les données du persona type
         $personaType = $this->getPersonaById($id_persona_type);

@@ -14,7 +14,7 @@ class OperationsController
     /**
      * Affiche la liste des opérations de l'utilisateur
      */
-    public function listOperations()
+    public function listOperations(): void
     {
         // Vérifier que l'utilisateur est connecté
         if (!UsersController::isLoggedIn()) {
@@ -30,7 +30,7 @@ class OperationsController
     /**
      * Affiche le formulaire de modification d'une opération
      */
-    public function editOperation()
+    public function editOperation(): void
     {
         // Vérifier que l'utilisateur est connecté
         if (!UsersController::isLoggedIn()) {
@@ -90,7 +90,7 @@ class OperationsController
     /**
      * Affiche la fiche d'une opération avec la liste des personas associés
      */
-    public function viewOperation()
+    public function viewOperation(): void
     {
         // Vérifier que l'utilisateur est connecté
         if (!UsersController::isLoggedIn()) {
@@ -125,7 +125,7 @@ class OperationsController
     /**
      * Supprime une opération
      */
-    public function deleteOperation()
+    public function deleteOperation(): void
     {
         // Vérifier que l'utilisateur est connecté
         if (!UsersController::isLoggedIn()) {
