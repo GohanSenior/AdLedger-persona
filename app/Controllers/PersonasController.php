@@ -119,7 +119,11 @@ class PersonasController
 
                     // Traiter les critères personnalisés
                     if (!empty($customCriteria)) {
-                        foreach ($customCriteria as $typeId => $customValues) {
+                        foreach ($customCriteria as $rawTypeId => $customValues) {
+                            $typeId = (int) $rawTypeId;
+                            if ($typeId <= 0) {
+                                continue;
+                            }
                             foreach ($customValues as $customValue) {
                                 $customValue = trim($customValue);
                                 if (!empty($customValue)) {
@@ -347,7 +351,7 @@ class PersonasController
         $persona = $this->personaModel->getPersonaById($id_persona);
 
         // Vérifier que le persona appartient à l'utilisateur
-        if (!$persona || $persona['id_user'] != $_SESSION['user_id']) {
+        if (!$persona || (int)$persona['id_user'] !== (int)$_SESSION['user_id']) {
             header('Location: index.php?action=list-personas');
             exit();
         }
@@ -469,7 +473,11 @@ class PersonasController
 
                     // Traiter les critères personnalisés
                     if (!empty($customCriteria)) {
-                        foreach ($customCriteria as $typeId => $customValues) {
+                        foreach ($customCriteria as $rawTypeId => $customValues) {
+                            $typeId = (int) $rawTypeId;
+                            if ($typeId <= 0) {
+                                continue;
+                            }
                             foreach ($customValues as $customValue) {
                                 $customValue = trim($customValue);
                                 if (!empty($customValue)) {
@@ -585,7 +593,7 @@ class PersonasController
         $redirectAction = 'list-personas';
         $personaOriginalId = null;
 
-        if ($persona['is_type'] == 1) {
+        if ($persona['is_type'] === 1) {
             // Pour supprimer un persona type, il faut être admin
             if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
                 $canDelete = true;
@@ -598,7 +606,7 @@ class PersonasController
             }
         } else {
             // Pour supprimer un persona normal, il faut être le propriétaire
-            if ($persona['id_user'] == $_SESSION['user_id']) {
+            if ((int)$persona['id_user'] === (int)$_SESSION['user_id']) {
                 $canDelete = true;
                 $redirectAction = 'list-personas';
             }
@@ -670,8 +678,8 @@ class PersonasController
             header('Location: index.php?action=list-personas');
             exit();
         }
-        $canView = $persona['id_user'] == $_SESSION['user_id'] // Le persona appartient à l'utilisateur
-            || $persona['is_type'] == 1 // C'est un persona type (public)
+        $canView = (int)$persona['id_user'] === (int)$_SESSION['user_id'] // Le persona appartient à l'utilisateur
+            || $persona['is_type'] === 1 // C'est un persona type (public)
             || (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'); // L'utilisateur est admin
         if (!$canView) {
             header('Location: index.php?action=list-personas');
@@ -747,7 +755,7 @@ class PersonasController
 
         try {
             // Bascule du statut typed (indique que le persona a été copié en persona type)
-            $newTypedStatus = $persona['typed'] == 1 ? 0 : 1;
+            $newTypedStatus = (int)$persona['typed'] === 1 ? 0 : 1;
             $updated = $this->personaModel->updateTypedStatus($id_persona, $newTypedStatus);
 
             if (!$updated) {
@@ -756,7 +764,7 @@ class PersonasController
                 exit();
             }
 
-            if ($newTypedStatus == 1) {
+            if ($newTypedStatus === 1) {
                 // Si le persona est maintenant marqué comme typé, créer une copie en persona type avec l'admin comme propriétaire
                 $created = $this->personaModel->createPersonaTypeFromExisting($id_persona, $_SESSION['user_id']);
 
@@ -799,7 +807,7 @@ class PersonasController
         // Récupérer le persona type
         $persona = $this->personaModel->getPersonaById($id_persona);
 
-        if (!$persona || $persona['is_type'] != 1) {
+        if (!$persona || (int)$persona['is_type'] !== 1) {
             // Ce n'est pas un persona type
             $_SESSION['error_message'] = "Persona type introuvable.";
             header('Location: index.php?action=list-personas-types');

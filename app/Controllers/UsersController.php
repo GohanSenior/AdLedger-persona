@@ -192,31 +192,44 @@ class UsersController
 
             // Vérifier les identifiants
             if (empty($errors)) {
-                $user = $this->userModel->getUserByUsername($username);
+                // Vérifier le nombre de tentatives récentes
+                $loginAttempts = new LoginAttempts();
+                $ip = $_SERVER['REMOTE_ADDR'];
 
-                if ($user && password_verify($password, $user['password'])) {
-                    // Vérifier si l'utilisateur est actif
-                    if ($user['enabled'] == 1) {
-                        // Stocker les informations de l'utilisateur dans la session
-                        session_regenerate_id(true); // ← génère un NOUVEL ID, invalide l'ancien
-                        $_SESSION['user_id'] = $user['id_user'];
-                        $_SESSION['username'] = $user['username'];
-                        $_SESSION['lastname'] = $user['lastname'];
-                        $_SESSION['firstname'] = $user['firstname'];
-                        $_SESSION['email'] = $user['email'];
-                        $_SESSION['phone'] = $user['phone'];
-                        $_SESSION['role'] = $user['role'];
-                        $_SESSION['last_activity'] = time(); // Initialiser le timestamp de la dernière activité
-                        $_SESSION['id_company'] = $user['id_company'];
-
-                        // Rediriger vers le tableau de bord
-                        header('Location: index.php?action=dashboard');
-                        exit();
-                    } else {
-                        $errors[] = "Votre compte a été désactivé. Contactez un administrateur.";
-                    }
+                if ($loginAttempts->countRecentAttempts($ip) >= 5) {
+                    $errors[] = "Trop de tentatives de connexion. Veuillez réessayer dans 15 minutes.";
                 } else {
-                    $errors[] = "Nom d'utilisateur ou mot de passe incorrect.";
+                    $user = $this->userModel->getUserByUsername($username);
+
+                    if ($user && password_verify($password, $user['password'])) {
+                        // Vérifier si l'utilisateur est actif
+                        if ($user['enabled'] === 1) {
+                            // Connexion réussie : réinitialiser le compteur de tentatives
+                            $loginAttempts->clearAttempts($ip);
+
+                            // Stocker les informations de l'utilisateur dans la session
+                            session_regenerate_id(true); // ← génère un NOUVEL ID, invalide l'ancien
+                            $_SESSION['user_id'] = $user['id_user'];
+                            $_SESSION['username'] = $user['username'];
+                            $_SESSION['lastname'] = $user['lastname'];
+                            $_SESSION['firstname'] = $user['firstname'];
+                            $_SESSION['email'] = $user['email'];
+                            $_SESSION['phone'] = $user['phone'];
+                            $_SESSION['role'] = $user['role'];
+                            $_SESSION['last_activity'] = time(); // Initialiser le timestamp de la dernière activité
+                            $_SESSION['id_company'] = $user['id_company'];
+
+                            // Rediriger vers le tableau de bord
+                            header('Location: index.php?action=dashboard');
+                            exit();
+                        } else {
+                            $errors[] = "Votre compte a été désactivé. Contactez un administrateur.";
+                        }
+                    } else {
+                        // Échec : enregistrer la tentative
+                        $loginAttempts->recordAttempt($ip);
+                        $errors[] = "Nom d'utilisateur ou mot de passe incorrect.";
+                    }
                 }
             }
         }
@@ -532,7 +545,7 @@ class UsersController
             // Vérifier si le username existe déjà (sauf pour l'utilisateur actuel)
             if (empty($errors) && $username !== $_SESSION['username']) {
                 $existingUsername = $this->userModel->getUserByUsername($username);
-                if ($existingUsername && $existingUsername['id_user'] != $_SESSION['user_id']) {
+                if ($existingUsername && (int)$existingUsername['id_user'] !== (int)$_SESSION['user_id']) {
                     $errors[] = "Ce nom d'utilisateur est déjà pris.";
                 }
             }
@@ -540,7 +553,7 @@ class UsersController
             // Vérifier si l'email existe déjà (sauf pour l'utilisateur actuel)
             if (empty($errors) && $email !== $_SESSION['email']) {
                 $existingUser = $this->userModel->getUserByEmail($email);
-                if ($existingUser && $existingUser['id_user'] != $_SESSION['user_id']) {
+                if ($existingUser && (int)$existingUser['id_user'] !== (int)$_SESSION['user_id']) {
                     $errors[] = "Un compte avec cet email existe déjà.";
                 }
             }
@@ -683,11 +696,11 @@ class UsersController
 
         if ($id && $enabled !== null) {
             // Vérifier que l'utilisateur n'essaie pas de se désactiver lui-même
-            if ($id == $_SESSION['user_id']) {
+            if ($id === (int)$_SESSION['user_id']) {
                 $_SESSION['error_message'] = "Vous ne pouvez pas désactiver votre propre compte.";
             } else {
                 try {
-                    $newStatus = ($enabled == 1) ? 0 : 1;
+                    $newStatus = ((int)$enabled === 1) ? 0 : 1;
                     $success = $this->userModel->updateUserEnabled($id, $newStatus);
 
                     if ($success) {

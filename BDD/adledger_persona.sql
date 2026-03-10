@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 26, 2026 at 08:02 AM
+-- Generation Time: Mar 10, 2026 at 10:44 AM
 -- Server version: 8.4.3
 -- PHP Version: 8.3.28
 
@@ -75,6 +75,18 @@ CREATE TABLE `criteria_types` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `login_attempts`
+--
+
+CREATE TABLE `login_attempts` (
+  `id_login_att` int NOT NULL,
+  `ip` varchar(45) NOT NULL,
+  `attempted_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `operations`
 --
 
@@ -109,6 +121,34 @@ CREATE TABLE `personas` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `swots`
+--
+
+CREATE TABLE `swots` (
+  `id_swot` int NOT NULL,
+  `title` varchar(50) NOT NULL,
+  `created_at` date NOT NULL,
+  `is_archived` tinyint(1) NOT NULL DEFAULT '0',
+  `id_company` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `swot_items`
+--
+
+CREATE TABLE `swot_items` (
+  `id_swot_item` int NOT NULL,
+  `category` enum('strength','weakness','opportunity','threat') NOT NULL,
+  `content` text NOT NULL,
+  `created_at` date NOT NULL,
+  `id_swot` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -124,9 +164,9 @@ CREATE TABLE `users` (
   `boss` tinyint(1) NOT NULL DEFAULT '1',
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `role` enum('user','admin') NOT NULL DEFAULT 'user',
+  `id_company` int NOT NULL,
   `reset_token` varchar(64) DEFAULT NULL,
-  `reset_token_expiry` datetime DEFAULT NULL,
-  `id_company` int NOT NULL
+  `reset_token_expiry` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -160,6 +200,13 @@ ALTER TABLE `criteria_types`
   ADD PRIMARY KEY (`id_criteria_type`);
 
 --
+-- Indexes for table `login_attempts`
+--
+ALTER TABLE `login_attempts`
+  ADD PRIMARY KEY (`id_login_att`),
+  ADD KEY `idx_ip_time` (`ip`,`attempted_at`);
+
+--
 -- Indexes for table `operations`
 --
 ALTER TABLE `operations`
@@ -172,6 +219,20 @@ ALTER TABLE `personas`
   ADD PRIMARY KEY (`id_persona`),
   ADD KEY `id_operation` (`id_operation`),
   ADD KEY `id_user` (`id_user`);
+
+--
+-- Indexes for table `swots`
+--
+ALTER TABLE `swots`
+  ADD PRIMARY KEY (`id_swot`),
+  ADD KEY `id_company` (`id_company`);
+
+--
+-- Indexes for table `swot_items`
+--
+ALTER TABLE `swot_items`
+  ADD PRIMARY KEY (`id_swot_item`),
+  ADD KEY `id_swot` (`id_swot`);
 
 --
 -- Indexes for table `users`
@@ -206,6 +267,12 @@ ALTER TABLE `criteria_types`
   MODIFY `id_criteria_type` int NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `login_attempts`
+--
+ALTER TABLE `login_attempts`
+  MODIFY `id_login_att` int NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `operations`
 --
 ALTER TABLE `operations`
@@ -216,6 +283,18 @@ ALTER TABLE `operations`
 --
 ALTER TABLE `personas`
   MODIFY `id_persona` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `swots`
+--
+ALTER TABLE `swots`
+  MODIFY `id_swot` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `swot_items`
+--
+ALTER TABLE `swot_items`
+  MODIFY `id_swot_item` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -246,6 +325,18 @@ ALTER TABLE `criteria`
 ALTER TABLE `personas`
   ADD CONSTRAINT `personas_ibfk_1` FOREIGN KEY (`id_operation`) REFERENCES `operations` (`id_operation`),
   ADD CONSTRAINT `personas_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`);
+
+--
+-- Constraints for table `swots`
+--
+ALTER TABLE `swots`
+  ADD CONSTRAINT `swots_ibfk_1` FOREIGN KEY (`id_company`) REFERENCES `company` (`id_company`);
+
+--
+-- Constraints for table `swot_items`
+--
+ALTER TABLE `swot_items`
+  ADD CONSTRAINT `swot_items_ibfk_1` FOREIGN KEY (`id_swot`) REFERENCES `swots` (`id_swot`);
 
 --
 -- Constraints for table `users`

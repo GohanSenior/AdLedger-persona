@@ -49,31 +49,8 @@ class MailerService
     }
 
     /**
-     * Récupère un template HTML depuis une URL ou un fichier
+     * Récupère un template HTML depuis un fichier local
      */
-    private function getTemplate(string $urlOrPath): string|false
-    {
-        // Si c'est une URL HTTP/HTTPS
-        if (preg_match('/^https?:\/\//', $urlOrPath)) {
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $urlOrPath);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            $content = curl_exec($ch);
-
-            if (curl_errno($ch)) {
-                return false;
-            }
-            return $content;
-        }
-
-        // Sinon, c'est un chemin de fichier local
-        if (file_exists($urlOrPath)) {
-            return file_get_contents($urlOrPath);
-        }
-
-        return false;
-    }
-
     /**
      * Remplace les variables dans un template
      */
@@ -116,7 +93,10 @@ class MailerService
     ): bool {
         try {
             // Récupérer le template
-            $template = $this->getTemplate($templatePath);
+            if (!file_exists($templatePath)) {
+                return false;
+            }
+            $template = file_get_contents($templatePath);
             if ($template === false) {
                 return false;
             }

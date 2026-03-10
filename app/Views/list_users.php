@@ -48,7 +48,7 @@
                                     <?php endif; ?>
                                 </td>
                                 <td>
-                                    <?php if ($user['enabled'] == 1): ?>
+                                    <?php if ($user['enabled'] === 1): ?>
                                         <span class="badge bg-success-custom">Actif</span>
                                     <?php else: ?>
                                         <span class="badge bg-secondary-custom">Inactif</span>
@@ -67,12 +67,12 @@
                                         <img class="icone-img img-normal" src="assets/img/personas.svg" alt="liste personas">
                                         <img class="icone-img img-hover" src="assets/img/personas-hover.svg" alt="liste-personas">
                                     </a>
-                                    <?php if ($user['id_user'] != $_SESSION['user_id']): ?>
+                                    <?php if ((int)$user['id_user'] !== (int)$_SESSION['user_id']): ?>
                                         <a href="index.php?action=toggle-user&id=<?= urlencode($user['id_user']) ?>&enabled=<?= urlencode($user['enabled']) ?>&redirect=<?= urlencode($_SERVER['REQUEST_URI']) ?>"
                                             class="icone-list"
-                                            onclick="return confirm('Êtes-vous sûr de vouloir <?= $user['enabled'] == 1 ? 'désactiver' : 'activer' ?> cet utilisateur ?');"
-                                            title="<?= $user['enabled'] == 1 ? 'Désactiver' : 'Activer' ?> l'utilisateur">
-                                            <?php if ($user['enabled'] == 1): ?>
+                                            onclick="return confirm('Êtes-vous sûr de vouloir <?= $user['enabled'] === 1 ? 'désactiver' : 'activer' ?> cet utilisateur ?');"
+                                            title="<?= $user['enabled'] === 1 ? 'Désactiver' : 'Activer' ?> l'utilisateur">
+                                            <?php if ($user['enabled'] === 1): ?>
                                                 <img class="icone-img img-normal" src="assets/img/toggle-on-alt.svg" alt="enabled">
                                                 <img class="icone-img img-hover" src="assets/img/toggle-on-alt2.svg" alt="enabled">
                                             <?php else: ?>
