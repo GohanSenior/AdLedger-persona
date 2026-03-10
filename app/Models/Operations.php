@@ -76,4 +76,15 @@ class Operations extends Model
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute(['id_operation' => $id_operation]);
     }
+
+    // Vérifie qu'une opération appartient à un utilisateur (via ses personas)
+    public function isOperationOwnedByUser(int $id_operation, int $id_user): bool
+    {
+        $sql = "SELECT 1 FROM personas
+                WHERE id_operation = :id_operation AND id_user = :id_user
+                LIMIT 1";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['id_operation' => $id_operation, 'id_user' => $id_user]);
+        return (bool) $stmt->fetch();
+    }
 }

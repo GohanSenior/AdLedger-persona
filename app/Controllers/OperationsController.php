@@ -53,6 +53,11 @@ class OperationsController
             exit();
         }
 
+        if (!$this->operationModel->isOperationOwnedByUser($id_operation, (int)$_SESSION['user_id'])) {
+            header('Location: index.php?action=list-operations');
+            exit();
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $operationName = trim($_POST['name'] ?? '');
 
@@ -106,6 +111,11 @@ class OperationsController
             exit();
         }
 
+        if (!$this->operationModel->isOperationOwnedByUser($id_operation, (int)$_SESSION['user_id'])) {
+            header('Location: index.php?action=list-operations');
+            exit();
+        }
+
         $personas = $this->personaModel->getPersonasByOperationId($id_operation);
         $redirect = sanitizeRedirect($_GET['redirect'] ?? null, 'index.php?action=list-operations');
         $content = __DIR__ . '/../Views/profile_operation.php';
@@ -132,6 +142,11 @@ class OperationsController
 
         $operation = $this->operationModel->getOperationById($id_operation);
         if (!$operation) {
+            header('Location: index.php?action=list-operations');
+            exit();
+        }
+
+        if (!$this->operationModel->isOperationOwnedByUser($id_operation, (int)$_SESSION['user_id'])) {
             header('Location: index.php?action=list-operations');
             exit();
         }
