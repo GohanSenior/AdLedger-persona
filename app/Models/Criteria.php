@@ -3,14 +3,14 @@
 class Criteria extends Model
 {
     // Récupère tous les critères
-    public function getCriterias()
+    public function getCriterias(): array
     {
         $sql = "SELECT * FROM criteria";
         return $this->pdo->query($sql)->fetchAll();
     }
 
     // Récupère les critères par type
-    public function getCriteriasByType($id_criteria_type)
+    public function getCriteriasByType(int $id_criteria_type): array
     {
         $sql = "SELECT * FROM criteria WHERE id_criteria_type = :id_criteria_type";
         $stmt = $this->pdo->prepare($sql);
@@ -19,7 +19,7 @@ class Criteria extends Model
     }
 
     // Récupère un critère par son ID
-    public function getCriteriaById($id_criterion)
+    public function getCriteriaById(int $id_criterion): array|false
     {
         $sql = "SELECT * FROM criteria WHERE id_criterion = :id_criterion";
         $stmt = $this->pdo->prepare($sql);
@@ -28,7 +28,7 @@ class Criteria extends Model
     }
 
     // Crée un nouveau critère
-    public function createCriteria($criterion_description, $id_criteria_type)
+    public function createCriteria(string $criterion_description, int $id_criteria_type): bool
     {
         $sql = "INSERT INTO criteria (criterion_description, id_criteria_type) 
                 VALUES (:criterion_description, :id_criteria_type)";
@@ -40,7 +40,7 @@ class Criteria extends Model
     }
 
     // Récupère un critère par sa description et son type
-    public function getCriteriaByDescriptionAndType($criterion_description, $id_criteria_type)
+    public function getCriteriaByDescriptionAndType(string $criterion_description, int $id_criteria_type): array|false
     {
         $sql = "SELECT * FROM criteria WHERE criterion_description = :criterion_description AND id_criteria_type = :id_criteria_type";
         $stmt = $this->pdo->prepare($sql);
@@ -52,7 +52,7 @@ class Criteria extends Model
     }
 
     // Recherche des critères par type et description (autocomplétion)
-    public function searchCriteriaByType($query, $id_criteria_type)
+    public function searchCriteriaByType(string $query, int $id_criteria_type): array
     {
         $sql = "SELECT * FROM criteria
                 WHERE id_criteria_type = :id_criteria_type
@@ -68,7 +68,7 @@ class Criteria extends Model
     }
 
     // Met à jour un critère existant
-    public function updateCriteria($id_criterion, $criterion_description, $id_criteria_type)
+    public function updateCriteria(int $id_criterion, string $criterion_description, int $id_criteria_type): bool
     {
         $sql = "UPDATE criteria SET 
                     criterion_description = :criterion_description, 

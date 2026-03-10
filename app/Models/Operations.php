@@ -3,14 +3,14 @@
 class Operations extends Model
 {
     // Récupère toutes les opérations
-    public function getOperations()
+    public function getOperations(): array
     {
         $sql = "SELECT * FROM operations";
         return $this->pdo->query($sql)->fetchAll();
     }
 
     // Récupère une opération par son ID
-    public function getOperationById($id_operation)
+    public function getOperationById(int $id_operation): array|false
     {
         $sql = "SELECT * FROM operations WHERE id_operation = :id_operation";
         $stmt = $this->pdo->prepare($sql);
@@ -19,7 +19,7 @@ class Operations extends Model
     }
 
     // Récupère une opération par son nom
-    public function getOperationByName($operation_name)
+    public function getOperationByName(string $operation_name): array|false
     {
         $sql = "SELECT * FROM operations WHERE operation_name = :operation_name LIMIT 1";
         $stmt = $this->pdo->prepare($sql);
@@ -28,7 +28,7 @@ class Operations extends Model
     }
 
     // Récupère une opération par son nom pour un utilisateur donné
-    public function getOperationByNameAndUserId($operation_name, $id_user)
+    public function getOperationByNameAndUserId(string $operation_name, int $id_user): array|false
     {
         $sql = "SELECT DISTINCT op.* FROM operations op
                 INNER JOIN personas p ON op.id_operation = p.id_operation
@@ -40,7 +40,7 @@ class Operations extends Model
     }
 
     // Récupère les opérations associées à un utilisateur
-    public function getOperationsByUserId($id_user)
+    public function getOperationsByUserId(int $id_user): array
     {
         $sql = "SELECT DISTINCT p.* FROM operations p
                 INNER JOIN personas pers ON p.id_operation = pers.id_operation
@@ -51,7 +51,7 @@ class Operations extends Model
     }
 
     // Crée une nouvelle opération
-    public function createOperation($operation_name)
+    public function createOperation(string $operation_name): bool
     {
         $sql = "INSERT INTO operations (operation_name) VALUES (:operation_name)";
         $stmt = $this->pdo->prepare($sql);
@@ -59,7 +59,7 @@ class Operations extends Model
     }
 
     // Met à jour une opération existante
-    public function updateOperation($id_operation, $operation_name)
+    public function updateOperation(int $id_operation, string $operation_name): bool
     {
         $sql = "UPDATE operations SET operation_name = :operation_name WHERE id_operation = :id_operation";
         $stmt = $this->pdo->prepare($sql);
@@ -70,7 +70,7 @@ class Operations extends Model
     }
 
     // Supprime une opération
-    public function deleteOperation($id_operation)
+    public function deleteOperation(int $id_operation): bool
     {
         $sql = "DELETE FROM operations WHERE id_operation = :id_operation";
         $stmt = $this->pdo->prepare($sql);

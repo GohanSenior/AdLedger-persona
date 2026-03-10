@@ -3,7 +3,7 @@
 class Companies extends Model
 {
     // Récupère toutes les entreprises
-    public function getCompanies()
+    public function getCompanies(): array
     {
         $sql = "SELECT * FROM company";
         $stmt = $this->pdo->query($sql);
@@ -11,7 +11,7 @@ class Companies extends Model
     }
 
     // Récupère une entreprise par son ID
-    public function getCompanyById($id_company)
+    public function getCompanyById(int $id_company): array|false
     {
         $sql = "SELECT * FROM company WHERE id_company = :id_company";
         $stmt = $this->pdo->prepare($sql);
@@ -20,7 +20,7 @@ class Companies extends Model
     }
 
     // Récupère le nom de l'entreprise associée à un utilisateur
-    public function getCompanyByUserId($id_user)
+    public function getCompanyByUserId(int $id_user): ?string
     {
         $sql = "SELECT c.company_name FROM company c
                 JOIN users u ON c.id_company = u.id_company
@@ -32,7 +32,7 @@ class Companies extends Model
     }
 
     // Crée une nouvelle entreprise
-    public function createCompany($name, $address, $zipcode, $city, $logo=null)
+    public function createCompany(string $name, string $address, string $zipcode, string $city, ?string $logo = null): bool
     {
         $sql = "INSERT INTO company (company_name, company_address, company_zipcode, company_city, logo_url) 
                 VALUES (:name, :address, :zipcode, :city, :logo)";
@@ -47,7 +47,7 @@ class Companies extends Model
     }
 
     // Met à jour une entreprise existante
-    public function updateCompany($id_company, $name, $address, $zipcode, $city, $logo=null)
+    public function updateCompany(int $id_company, string $name, string $address, string $zipcode, string $city, ?string $logo = null): bool
     {
         $sql = "UPDATE company SET 
                     company_name = :name, 
@@ -68,7 +68,7 @@ class Companies extends Model
     }
 
     // Supprime une entreprise
-    public function deleteCompany($id_company)
+    public function deleteCompany(int $id_company): bool
     {
         $sql = "DELETE FROM company WHERE id_company = :id_company";
         $stmt = $this->pdo->prepare($sql);

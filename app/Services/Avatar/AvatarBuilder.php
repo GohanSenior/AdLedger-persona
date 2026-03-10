@@ -18,7 +18,7 @@ class AvatarBuilder
         $base = "https://api.dicebear.com/9.x/{$this->style}/svg?seed=" . urlencode($this->seed);
 
         foreach ($this->options as $key => $value) {
-            $base .= "&{$key}={$value}";
+            $base .= '&' . urlencode($key) . '=' . urlencode($value);
         }
 
         return $base;
