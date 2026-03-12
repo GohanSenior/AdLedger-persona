@@ -187,7 +187,7 @@ class PersonasController
                                 $mailer->sendWithTemplate($adminEmail, $adminName, $subject, $templatePath, $variables);
                             }
                         } catch (Exception $e) {
-                            // L'erreur d'envoi de mail ne doit pas bloquer la création du persona
+                            error_log('[Persona creation] Email notification failed: ' . $e->getMessage());
                         }
                     }
 
