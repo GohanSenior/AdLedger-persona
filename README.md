@@ -2,6 +2,8 @@
 
 Application web de gestion de **personas marketing** développée en PHP natif avec une architecture MVC maison.
 
+> Dépôt GitHub : [https://github.com/GohanSenior/AdLedger-persona](https://github.com/GohanSenior/AdLedger-persona)
+
 ---
 
 ## Sommaire
